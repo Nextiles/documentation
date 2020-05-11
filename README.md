@@ -1,5 +1,23 @@
 # Documentation
 
+## Naming convention
+
+Category heirarchies are concatenated to form the repo name, hyphenated between words, and all in lower case.
+
+For example, creating a mobile ios for internal purposes will be named
+
+```
+mobile-ios-internal
+```
+
+Another would be, creating devices with 3D parts will be named
+
+```
+device-3D
+```
+
+There should be no plural in these categories, such as device~~s~~, app~~s~~, web~~s~~, etc.
+
 ## Categories
 
 ### Device
@@ -36,24 +54,6 @@
 ### Public
 - nextiles.github.io
 - documentation - will also contain the wiki page
-
-## Naming conventions
-
-Category heirarchies are concatenated to form the repo name, all in lower case.
-
-For example, creating a mobile ios for internal purposes will be named
-
-```
-mobile-ios-internal
-```
-
-Another would be, creating devices with 3D parts will be named
-
-```
-device-3D
-```
-
-There should be no plural in these categories, such as device~~s~~, app~~s~~, web~~s~~, etc.
 
 ## Branching
 
