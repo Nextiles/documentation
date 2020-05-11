@@ -18,11 +18,9 @@
   - ios
     - internal
     - demo
-      - <name>
   - android
     - internal
     - demo
-      - <name>
 
 ### Web
 - web
@@ -44,10 +42,16 @@
 Category heirarchies are concatenated to form the repo name, all in lower case.
 
 For example, creating a mobile ios for internal purposes will be named
-> mobile-ios-internal
+
+```
+mobile-ios-internal
+```
 
 Another would be, creating devices with 3D parts will be named
-> device-3D
+
+```
+device-3D
+```
 
 There should be no plural in these categories, such as device~~s~~, app~~s~~, web~~s~~, etc.
 
@@ -57,7 +61,9 @@ Branches with feature requests should have names starting with the contributor's
 
 Note that all branches should be lowercased, and hyphenated between words. For example
 
-> gls-newfeature-linux
+```
+gls-newfeature-linux
+```
 
 ### Development cycles
 
@@ -69,4 +75,5 @@ Production = ...
 Stable = ...
 
 ## References
-- https://github.com/rotati/wiki/wiki/Deployment-and-QA-Workflow
+- Development strategy - https://github.com/rotati/wiki/wiki/Deployment-and-QA-Workflow
+- Wiki structure and format - https://github.com/snowplow/snowplow/wiki
