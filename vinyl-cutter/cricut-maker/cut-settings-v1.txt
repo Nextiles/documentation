@@ -1,0 +1,55 @@
+Design Space 3
+	0 < Pressure < 350
+	1 < Multi Cut < 9X
+	Blades
+		- fine point blade* (default)
+		- deep point blade
+		- rotary blade
+
+custom_Mylar4mil
+	> pressure = 200
+	> multicut = off
+	> knife = fine-point blade
+
+custom_Mylar4mil
+	> pressure = 300
+	> multicut = 4X
+	> knife = fine-point blade
+
+custom_MylarScore
+	> pressure = 100
+	> multicut = off
+	> knife = fine-point blade
+
+custom_CuSheet_v0
+	> pressure = 100
+	> multicut = off
+	> knife = fine-point blade
+
+custom_CuMylar4mil
+	> pressure = 200
+	> multicut = 2X
+	> knife = fine-point blade
+
+custom_Velostat
+	> pressure = 120
+	> multicut = off
+	> knife = fine-point blade
+
+custom_Kapton
+	> pressure = 140
+	> multicut = 2X
+	> knife = fine-point blade
+
+custom_ScotchTape
+	> pressure = 95
+	> multicut = off
+	> knife = fine-point blade
+
+custom_GafferTape
+	> pressure = 180
+	> multicut = off
+	> knife = fine-point blade
+
+
+	
