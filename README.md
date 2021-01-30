@@ -2,77 +2,82 @@
 
 ## Naming convention
 
-Category heirarchies are concatenated to form the repo name, hyphenated between words, and all in lower case.
+Category hierarchies are concatenated to form the repo name going from general category to more specific, hyphenated-between-words, and all in lower case. There should be no plural in these categories, such as device~~s~~, app~~s~~, web~~s~~, etc.
 
-For example, creating a mobile ios for internal purposes will be named
+For example, creating a mobile app in iOS for production purposes will be named. Note that iOS is _not_ capitalized.
 
 ```
 mobile-ios-internal
 ```
 
-Another would be, creating devices with 3D parts will be named
-
-```
-device-3D
-```
-
-There should be no plural in these categories, such as device~~s~~, app~~s~~, web~~s~~, etc.
-
 ## Categories
 
+Each repo will be named based on their category, with hyphenated suffixes to further describe their project information. An example would be
+
+```
+device-pcb
+```
+
+which describes that this repo belongs to the device team, members who are responsible for developing the PCB (printed circuit board), for the group.
+
 ### Device
-- device
-  - firmware - contains C code
-  - PCB - circuit schematics
-  - 3D - casings and device renderings
-  
+- `device`
+  - [`firmware`](https://github.com/Nextiles/device-firmware) - device firmware machine code
+  - [`pcb`](https://github.com/Nextiles/device-pcb) - printed circuit board schematics
+  - [`techpack`](https://github.com/Nextiles/device-techpack) - vector files for textile and sensor layout
+  - [`testing`](https://github.com/Nextiles/device-testing) - scripts and quality-control code to test devices
+  - [`demo`](https://github.com/Nextiles/device-demo) - scripts and frontend/backend code to demonstrate device functionality
+
 ### Data
-- data
-  - lab - playground for any type of prototyping
-  - <name> - repo pertaining to a specific project name
+- `data`
+  - [`lab`](https://github.com/Nextiles/data-lab) - cookie-cutter data exploration code for machine learning or algorithm development
+  - [`cloud-manager`](https://github.com/Nextiles/data-cloud-manager) - scripts and CLI revolved around remote cloud management on AWS, Firebase, Influx, etc.
 
 ### Mobile
-- mobile
-  - ios
-    - internal
-    - demo
-  - android
-    - internal
-    - demo
+- `mobile`
+  - `ios`
+    - [`production`](https://github.com/Nextiles/mobile-ios-production)
+    - [`internal`](https://github.com/Nextiles/mobile-ios-internal)
+    - [`testing`](https://github.com/Nextiles/mobile-ios-testing)
+  - `android`
+    - [`production`](https://github.com/Nextiles/mobile-android-production)
+    - [`internal`](https://github.com/Nextiles/mobile-ios-internal)
+    - [`testing`](https://github.com/Nextiles/mobile-android-testing)
+  - `reactnative`
+    - [`testing`](https://github.com/Nextiles/mobile-reactnative-testing)
 
-### Web
-- web
-  - internal
-  - demo
-  
+### Client Specific
+- `client`
+  - `XYZ` - client name, documents, code, custom development revolved around a client product
+
+### Company Specific
+- `nextiles.github.io` - github pages website hosting, with related subdomains
+  - [`patents`](https://github.com/Nextiles/patents) - public list of patents
+  - [`trademark`](https://github.com/Nextiles/trademark) - public list of trademarks
+  - [`whitepaper`](https://github.com/Nextiles/whitepaper) - business and technology whitepapers
+  - [`slides`](https://github.com/Nextiles/slides) - company slide decks
+- `brand`
+  - [`assets`](https://github.com/Nextiles/brand-assets) - brand logos, colors, fonts, images
+- [`documentation`](https://github.com/Nextiles/documentation)
+
 ### Generators
-- generator
-  - nx-datalab
-  - nx-ble - drafting a quick bluetooth platform
-  - nx-demos - this can consist of spinning up ios, android, or web demos via subgenerators
-  
-### Public
-- nextiles.github.io
-- documentation - will also contain the wiki page
+- `generator` - to be made
+
+### Forked
+- [`gitignore`](https://github.com/Nextiles/gitignore)
+- [`InfluxData-Swift`](https://github.com/Nextiles/InfluxData-Swift)
 
 ## Branching
 
-Branches with feature requests should have names starting with the contributor's initials, the feature name, and any other optional notes such as the development environment.
-
-Note that all branches should be lowercased, and hyphenated between words. For example
+Branches with feature requests should have names starting with the contributor's initials, the feature name, and any other optional notes such as the development environment. Note that all branches should be lowercased, and hyphenated between words. For example
 
 ```
 gls-newfeature-linux
 ```
 
-### Development cycles
+## Development Methodoloy
 
-`Development` > `Staging` > `Production` ~ `Stable`
-
-Development = any type of testing, feel free to sandbox
-Staging = ... 
-Production = ...
-Stable = ...
+To be created
 
 ## References
 - Development strategy - https://github.com/rotati/wiki/wiki/Deployment-and-QA-Workflow

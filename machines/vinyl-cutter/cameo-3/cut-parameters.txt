@@ -1,0 +1,43 @@
+-----------------
+Siluoette Cameo 3
+-----------------
+
+Copper sheet
+============
+Blade tool = 2 (0.2 mm) [Automatic]
+Speed = 2 (cm/s)
+Thickness = 5 - 10
+
+Blade tool = 3 (0.3 mm) [Premium/Ratchet]
+Speed = 2 (cm/s)
+Thickness = 5 - 10
+
+Epson Glossy Photo Paper
+========================
+(use mat)
+Blade tool = 3 (0.3 mm) [Automatic]
+Speed = 2 (cm/s)
+Thickness = 10
+
+Stencil Mylar Blanks (7.5 mil)
+========================
+(use mat)
+Blade tool = 6 (0.6 mm) [Automatic]
+Speed = 2 (cm/s)
+Thickness = 30
+- double cut
+
+Blade tool = 8 (0.8 mm) [Deep cut]
+Speed = 2 (cm/s)
+Thickness = 30
+- double cut
+
+Velostat
+============
+Blade tool = 1 (0.1 mm) [Automatic]
+Speed = 2 (cm/s)
+Thickness = 5
+
+Blade tool = 3 (0.3 mm) [Premium]
+Speed = 2 (cm/s)
+Thickness = 5 - 10
