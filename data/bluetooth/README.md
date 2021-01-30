@@ -1,13 +1,16 @@
 # Documentation
 
 - [Documentation](#documentation)
+  * [Bluetooth Overview](#bluetooth-overview)
   * [Firmware Version - 0.0.0](#firmware-version---000)
-    + [4. Custom Service](#4-custom-service)
+    + [Custom Service](#custom-service)
+      - [Delimiter](#delimiter)
       - [Acceleration](#acceleration)
       - [Gyration](#gyration)
       - [Magnetometer](#magnetometer)
       - [ADC](#adc)
       - [Environment](#environment)
+  * [Firmware Version - 0.0.1](#firmware-version---001)
 
 ## Bluetooth Overview
 
@@ -86,7 +89,7 @@ Values are not multiplied, values typically are wholenumbers
 
 #### ADC
 
-Values are 10 bit (1023) to 12 bit (4095) meaning 4 bytes of resolution when casted to chars. Every characteristic packet can carry up to 5 4 byte sensor values.
+Values are 10 bit (1023) to 12 bit (4095) meaning 4 bytes of resolution when casted to chars. Every characteristic packet can carry up to 5 x 4 byte sensor values.
 
 ```c
 AAAABBBBCCCCDDDDEEEE
