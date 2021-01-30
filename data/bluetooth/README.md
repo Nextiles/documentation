@@ -1,4 +1,4 @@
-# Documentation
+# Bluetooth
 
 ## Table of Contents
 
