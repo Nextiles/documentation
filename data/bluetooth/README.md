@@ -48,16 +48,16 @@ Bluetooth sniffers
 
 1. DFU
 2. Device information
-  - Manufacture name
-  - Model number
+  1. Manufacture name
+  2. Model number
 3. Battery
-  - Battery level
+  1. Battery level
 4. Custom service
-  - Acceleration
-  - Gyration
-  - Magnetometer (direction)
-  - ADC (force)
-  - Environment
+  1. Acceleration
+  2. Gyration
+  3. Magnetometer (direction)
+  4. ADC (force)
+  5. Environment
 
 ### Custom Service
 
@@ -115,13 +115,13 @@ XXX.XX,YYY.YY,±ZZ.ZZ
 
 1. DFU
 2. Device information
-  - Manufacture name
-  - Model number
+  1. Manufacture name
+  2. Model number
 3. Battery
-  - Battery level
+  1. Battery level
 4. Custom service
-  - Acceleration
-  - Gyration
-  - Magnetometer (direction)
-  - ADC (force)
-  - Environment
+  1. Acceleration
+  2. Gyration
+  3. Magnetometer (direction)
+  4. ADC (force)
+  5. Environment

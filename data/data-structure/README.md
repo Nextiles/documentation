@@ -24,6 +24,7 @@ Refer to bluetooth [README.md](../bluetooth/README.md) for information on data s
   2. IMU
   3. sensor
   4. environment
+
 4. value
 5. field
   1. ax
@@ -41,6 +42,7 @@ Refer to bluetooth [README.md](../bluetooth/README.md) for information on data s
   13. hum
   14. alt
   15. v
+
 6. type
   1. acceleration
   2. gyration
@@ -49,6 +51,7 @@ Refer to bluetooth [README.md](../bluetooth/README.md) for information on data s
   5. battery
   6. device
   7. velocity (should be computed)
+
 7. host
 8. device
 9. platform
