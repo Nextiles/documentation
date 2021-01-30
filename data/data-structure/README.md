@@ -20,38 +20,35 @@ Refer to bluetooth [README.md](../bluetooth/README.md) for information on data s
 1. time
 2. milliseconds
 3. measurement
-  1. battery
-  2. IMU
-  3. sensor
-  4. environment
-
+    1. battery
+    2. IMU
+    3. sensor
+    4. environment
 4. value
 5. field
-  1. ax
-  2. ay
-  3. az
-  4. gx
-  5. gy
-  6. gz
-  7. mx
-  8. my
-  9. mz
-  10. a0
-  11. b
-  12. temp
-  13. hum
-  14. alt
-  15. v
-
+    1. ax
+    2. ay
+    3. az
+    4. gx
+    5. gy
+    6. gz
+    7. mx
+    8. my
+    9. mz
+    10. a0
+    11. b
+    12. temp
+    13. hum
+    14. alt
+    15. v
 6. type
-  1. acceleration
-  2. gyration
-  3. magnet
-  4. adc
-  5. battery
-  6. device
-  7. velocity (should be computed)
-
+    1. acceleration
+    2. gyration
+    3. magnet
+    4. adc
+    5. battery
+    6. device
+    7. velocity (should be computed)
 7. host
 8. device
 9. platform
