@@ -1,6 +1,22 @@
 # Documentation
 
-## Naming convention
+## Table of Contents
+
+- [Documentation](#documentation)
+  * [File Naming Convention](#naming-convention)
+  * [Repository Naming Convention ](#categories)
+    + [Device](#device)
+    + [Data](#data)
+    + [Mobile](#mobile)
+    + [Client Specific](#client-specific)
+    + [Company Specific](#company-specific)
+    + [Generators](#generators)
+    + [Forked](#forked)
+  * [Branching](#branching)
+  * [Development Methodoloy](#development-methodoloy)
+  * [References](#references)
+
+## File Naming Convention
 
 Category hierarchies are concatenated to form the repo name going from general category to more specific, hyphenated-between-words, and all in lower case. There should be no plural in these categories, such as device~~s~~, app~~s~~, web~~s~~, etc.
 
@@ -10,7 +26,7 @@ For example, creating a mobile app in iOS for production purposes will be named.
 mobile-ios-internal
 ```
 
-## Categories
+## Repository Naming Convention
 
 Each repo will be named based on their category, with hyphenated suffixes to further describe their project information. An example would be
 
