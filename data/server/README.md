@@ -19,10 +19,10 @@ Refer to data=structure [README.md](../data-structure/README.md) for information
 2. User association: team, league, organization, unaffiliated
 3. User connection: coach, other players, etc.
 4. Primary sport
-  1. Secondary sport
+    1. Secondary sport
 5. Type of exercise
-  1. Primary exercise (could be fluid)
-  2. Secondary exercise
+    1. Primary exercise (could be fluid)
+    2. Secondary exercise
 6. Day of use
 7. Time of use
 
