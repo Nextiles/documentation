@@ -1,19 +1,97 @@
 # Documentation
 
+## Table of Contents
+
 - [Documentation](#documentation)
-  * [Bluetooth Overview](#bluetooth-overview)
-  * [Firmware Version - 0.0.0](#firmware-version---000)
-    + [Custom Service](#custom-service)
-      - [Delimiter](#delimiter)
-      - [Acceleration](#acceleration)
-      - [Gyration](#gyration)
-      - [Magnetometer](#magnetometer)
-      - [ADC](#adc)
-      - [Environment](#environment)
-  * [Firmware Version - 0.0.1](#firmware-version---001)
 
-## Bluetooth Overview
+## Pre-requisite
 
+Refer to bluetooth [README.md](../bluetooth/README.md) for information on data structure
+
+## Data Structure Version - 0.0.0
+
+### Features
+1. time
+2. milliseconds
+3. measurement
+  - battery
+  - IMU
+  - sensor
+  - environment
+4. value
+5. field
+  - ax
+  - ay
+  - az
+  - gx
+  - gy
+  - gz
+  - mx
+  - my
+  - mz
+  - a0
+  - b
+  - temp
+  - hum
+  - alt
+  - v
+6. type
+  - acceleration
+  - gyration
+  - magnet
+  - adc
+  - battery
+  - device
+  - velocity (should be computed)
+7. host
+8. device
+9. platform
+
+### Detail
+
+__Time__ is the current time with respects to device location.
+__Milliseconds__ is the amount of time elapsed since the start of the session. This value is reset whenever the current session is stopped.
+__Measurement__, __value__, __field__, __type__ related to the type of data.
+__Host__ is the user name, __device__ is the name of the connected Bluetooth device, and __platform__ is the app information currently being used to assemble the data.
+
+Data is primarily labelled by its measurement, and then further described by the its type. The field is typically an acronym of the type while also containing more specific information on the index, direction, or specification units of the measurement. Generally, it follows:
+
+```c
+value
+- measurement
+  - type
+    - field
+```
+
+For example, for the X-direction of the acceleration is labelled IMU, then by acceleration, and finally fully described by its field `ax`.
+
+```c
+value
+- IMU
+  - acceleration
+    - ax
+```
+
+For the sensor data, the field fully describes the index of the sensor `a0`
+
+```c
+value
+- sensor
+  - adc
+    - a0
+```
+
+Sensors that are over described, for example, are the battery
+
+```c
+value
+- battery
+  - battery
+    - b
+```
+
+
+### Example
 
 |time        |milliseconds|measurement|value      |field|type        |host|device |platform|
 |------------|------------|-----------|-----------|-----|------------|----|-------|--------|

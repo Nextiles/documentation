@@ -1,5 +1,7 @@
 # Documentation
 
+## Table of Contents
+
 - [Documentation](#documentation)
   * [Bluetooth Overview](#bluetooth-overview)
   * [Firmware Version - 0.0.0](#firmware-version---000)
