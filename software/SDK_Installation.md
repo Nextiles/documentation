@@ -4,6 +4,8 @@ Leverage the cutting edge Nextiles Technology, with Nextiles SDK and power your 
 
 The following document talks about how to integrate the SDK in one's application. The document also provides a walkthrough on after installing the SDK; how to connect or disconnect a device, extract raw data and many other cool features.
 
+Note: BLE Devices and the technology is out of this scope. You may want to read through [Bluetooth Connections](https://developer.apple.com/bluetooth/), if you want to dive deeper into it. 
+
 ### Features
 
 ### Platform Support
@@ -55,8 +57,122 @@ A fix is to remove that account and try from the step 1 again and this time XCod
 
 
 7. In your app code, explicitly import NextilesSDK and test the SDK like this:
+``` Swift
+import SwiftUI
+import NextilesSDK
 
-![Usage Nextiles](readme_images/usage_nextilesSDK.png)
+struct ContentView:View{
+    var sdk = NextilesSDK()
+    var body:some View{
+      MainViewComponent()
+    }
+}
 
+```
+
+### Device struct and other definitions:
+We provide a Nextiles Device struct for you to interact with a device. This struct gives you access to device's UUID, address, name and several other features. For your convinience, we're going to define the structure here:
+``` Swift
+
+    public struct Device{
+        public let name: String
+        public let id: UUID
+        public var address: String?
+        public var rssi: Int? = nil
+        public var connected: Bool = false
+    }
+    
+```
+So, now if you have a device object, you can easily access its features. 
+For ex: to get the device's name: ```deviceObject.name```, to get device's UUID: ```deviceObject.id```, in string format ```deviceObject.id.uuidString```.
+#### NextilesDeviceType
+In our SDK, you will need to define what type of device one is and the device which you are trying to connect and that's where NextilesDeviceType structure comes handy. 
+NextilesDeviceType has:
+``` 1. SLEEVE
+    2. KNEEBRACE
+    3. SOCK
+    4. MAT
+```
+so you can use it as: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.MAT```
 
 ### Use NextilesSDK and it's features
+Now that the SDK is available for use, it's time to see how we can use it.
+NextilesSDK comes with many features and some of them are:
+
+1. One time Registration:
+
+2. Scanning:
+    You can scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
+    ##### Usage/Example:
+    ``` Swift
+        import SwiftUI
+        import NextilesSDK
+        ...
+        
+        var sdk = NextilesSDK()
+        sdk.startScan() // can be done on a button click or any other event you like
+        ...
+        
+     ```
+    To get the list of devices, use SDK's ```getPeripherals()``` function.
+    It returns a [@Published](https://developer.apple.com/documentation/combine/published) **Device** List (any change in the list, makes your UI reload automatically). 
+
+    ##### Usage/Example :
+    ``` Swift
+        var sdk = NextilesSDK()
+
+        ...
+        
+        {
+            List{
+                    ForEach(sdk.getPeripherals(),id:\.id){
+                        device in
+                            HStack{
+                               Text(device.name)
+                                Spacer()
+                        }
+                    }
+                }
+           }
+           
+    ```
+Here, ```getPeripherals()``` returns the list of devices which are discoverable and as is visible in the above snippet, we can access device attributes as well.
+
+3. Connecting  
+ - To connect a device, use SDK's ``` connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String. 
+ - You can check if the device is connected by using, ``` getConnectedDevicesListInDeviceForm ``` function. The following function returns a @Published list, which you can attach a listener to, so as soon as the device is connected it updates all its subscribers.
+
+##### Usage/Example:
+``` Swift
+
+import SwiftUI
+import NextilesSDK
+
+@EnvironmentObject var sdk:NextilesSDK
+@Binding var device:Device?
+
+struct DummyView: View {
+    var body: some View {
+      Text("Hello World")
+            .onChange(of: sdk.getConnectedDevicesListInDeviceForm(), perform: { value in
+            
+            // here value is a list of all the connectedDevices, in case if you're trying to connect multiple devices.
+            // you can have your own logic to see if the list contains the device or not
+            
+                value.forEach{ _device in
+                    if _device.id == self.device?.id{
+                    
+                        // Now the device is connected, you can subscribe to it (shown in step 4.), or do your after connection logic
+                        print("Device is connected")
+                    
+                    }
+                }
+            })
+    }
+  }
+  
+```
+As shown in the above example, ```sdk.getConnectedDevicesListInDeviceForm()``` makes our life easier by providing a @Published list, so we don't have to worry about re-rendering the UI.
+
+**Also, another thing to note here is, we are using sdk as an EnvironmentObject in this example, as it helps us initialize it once and avoid inconsistencies**
+
