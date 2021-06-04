@@ -41,7 +41,7 @@ Note: BLE Devices and the technology is out of this scope. You may want to read 
     - NEXTILES_ANGULAR
     - NEXTILES_ENVIRONMENT
     
-    This would be useful in step 5. Live Data Stream in [**Use NextilesSDK and it's features**](###Use-NextilesSDK-and-it's-features)
+    This would be useful in Step 5. Live Data Stream in [**Use NextilesSDK and it's features**](###Use-NextilesSDK-and-it's-features)
 
 ### Install Nextiles SDK via SPM (Swift package manager)
 
