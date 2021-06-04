@@ -31,6 +31,17 @@ Note: BLE Devices and the technology is out of this scope. You may want to read 
 
 6. TIME_INTERVAL
     - is a time interval which decides if the data should be stored in a CSV and create a new CSV to accomodate the live data stream. It's an interval by which SDK breaks the CSVs 
+ 
+7. Nextiles Parameters
+    Nextiles Parameters are the field types or features which a Nextiles Device can track. To make it easier for clients, we have made these specific definitions.     And these are:    
+    - NEXTILES_BATTERY
+    - NEXTILES_ACCELERATION
+    - NEXTILES_GYRATION
+    - NEXTILES_MAGNET
+    - NEXTILES_ANGULAR
+    - NEXTILES_ENVIRONMENT
+    
+    This would be useful in step 5. Live Data Stream in [**Use NextilesSDK and it's features**](###Use-NextilesSDK-and-it's-features)
 
 ### Install Nextiles SDK via SPM (Swift package manager)
 
@@ -154,8 +165,8 @@ NextilesSDK comes with many features and some of them are:
                                 Spacer()
                         }
                     }
-                }
-           }
+            }
+        }
            
     ```
 Here, ```getPeripherals()``` returns the list of devices which are discoverable and as is visible in the above snippet, we can access device attributes as well.
@@ -198,11 +209,59 @@ As shown in the above example, ```sdk.getConnectedDevicesListInDeviceForm()``` m
 
 **Also, another thing to note here is, NextilesSDK instance is being stored in an EnvironmentObject, as it helps us initialize it once and avoid inconsistencies**
 
-4. Reading Data
+4. Subscribe/Reading Data
 
-Once the device is connected, we are ready to read the data and for that we will start the session. To read the data we will use ``` subscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. While the device is being Subscribed, our SDK keeps track of the data emitted by the device and all of that data would be stored as soon as we stop (unsubscribe or disconnect) or the TIME_INTERVAL exceeds.
+Once the device is connected, we are ready to read the data and for that we will subscribe to the device's characteristics. To subscribe and start reading the data we will use ``` subscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. While the device is being subscribed, our SDK reads the data emitted by the device and all of that data would be stored as soon as we stop (unsubscribe or disconnect) or the TIME_INTERVAL exceeds.
 
-5. Unsubscribe/ Generating CSVs
+####Usage:
+```
+# in the above example, we can use this function like:
+
+var body:some View{
+    Button(action:{
+        sdk.subscribeCharacteristics(self.device!)
+    }){
+        Text("Subscribe")
+    }
+}
+```
+To check if the device is subscribed, you can use SDK's ``` getSubscribedDevices() ``` function, which returns a dictionary of [String:Bool], where key will be the device's UUID (in String format) and value is True or False. Similar to ``` getPeripherals() ```, this also publishes an event which you can listen to. If a device is subscribed or unsubscribed, it reflect the change. 
+
+####Usage:
+```
+VStack{
+    Text("Hello")
+    }.onChange(of: sdk.getSubscribedDevices(), perform: { value in
+                        // where value is a dictionary of [String:Bool]
+
+                        if value.contains(self.device.id.uuidString){
+                            print(" Device Subscribed ")
+                        }
+    })
+}
+```
+Now that we have subscribed to the device, the data reading is real. Nextiles Device is emitting data, the SDK is reading and storing it in your application's local storage (Documents folder). If internet connection is on, it's also uploading data to the cloud, to maintain a copy of that data. To see the data follow next steps.
+
+5. Live Data Stream
+This is where the Nextiles SDK becomes more powerful, where not only the data is being stored in CSV formats but also this SDK provides you **Publisher** handles to which you can attach a listener and see the data in real time. You can plot real time charts on top of this data.
+
+You can use ``` getDeviceListeners(_ device_id:String, _ feature: String) ``` function, which takes two arguments:
+    -  device_id: Device's UUID in String format
+    -  feature: the feature you want to listen to, like "acceleration", "gyration", "angular", etc.
+    
+####Usage:
+```
+    VStack{
+      ...
+    }.onReceive(sdk.getDeviceListeners(device!.id.uuidString, NEXTILES_ACCELERATION){ value in
+       let acceleration_x = value[0] // at 0th index, acceleration at x axis
+       let acceleration_y = value[1] // at 1th index, acceleration at y axis
+       let acceleration_z = value[2] // at 2nd index, acceleration at z axis
+    }
+```
+
+
+6. Unsubscribe/ Generating CSVs
 Unsubscribing is more like a pause event in a play-pause-stop cycle. When the user is tired and doesn't want to track the data or just want a break, that's when we will use SDK's ``` unsubscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. Use this function to stop listening to the Nextiles Device. 
 
 SDK takes care of generating the CSVs on behalf of us.
