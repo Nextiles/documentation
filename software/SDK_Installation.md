@@ -12,6 +12,26 @@ Note: BLE Devices and the technology is out of this scope. You may want to read 
 
 ### License
 
+### Terminologies
+
+1. Connect
+    - As the term says, this is when you connect a device, or establish a bluetooth connection with a BLE Device
+
+2. Subscribe
+    - This is done only when the device is connected. You cannot subscribe to a device which is not connected. Subscribe in this document means subscribing to a BLE device characteristics.
+
+3. Unsubscribe
+    - When user doesn't want to listen to the BLE device, but also doesn't want to disconnect. That's where we need to do Unsubscribe.
+
+4. Disconenct
+    - When user want to disconnect a connected device.
+
+5. Characteristics
+    - Consider Characteristics as data points which you can listen to, of a Nextiles device. NextilesSDK acts as a wrapper and provides raw, calculated data points for, acceleration, gyration, pressure, torque, etc.
+
+6. TIME_INTERVAL
+    - is a time interval which decides if the data should be stored in a CSV and create a new CSV to accomodate the live data stream. It's an interval by which SDK breaks the CSVs 
+
 ### Install Nextiles SDK via SPM (Swift package manager)
 
 1. Swift Package Manager is distributed with Xcode. To start adding the Nextiles SDK to your iOS project, open your project in Xcode and select File > Swift Packages > Add Package Dependency. Note:- XCode is at 12.5, at the time of this document.
@@ -174,5 +194,20 @@ struct DummyView: View {
 ```
 As shown in the above example, ```sdk.getConnectedDevicesListInDeviceForm()``` makes our life easier by providing a @Published list, so we don't have to worry about re-rendering the UI.
 
-**Also, another thing to note here is, we are using sdk as an EnvironmentObject in this example, as it helps us initialize it once and avoid inconsistencies**
+**Also, another thing to note here is, NextilesSDK instance is being stored in an EnvironmentObject, as it helps us initialize it once and avoid inconsistencies**
 
+4. Reading Data
+
+Once the device is connected, we are ready to read the data and for that we will start the session. To read the data we will use ``` subscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. While the device is being Subscribed, our SDK keeps track of the data emitted by the device and all of that data would be stored as soon as we stop (unsubscribe or disconnect) or the TIME_INTERVAL exceeds.
+
+5. Unsubscribe/ Generating CSVs
+Unsubscribing is more like a pause event in a play-pause-stop cycle. When the user is tired and doesn't want to track the data or just want a break, that's when we will use SDK's ``` unsubscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. Use this function to stop listening to the Nextiles Device. 
+
+SDK takes care of generating the CSVs on behalf of us.
+#### Local Storage Structure
+
+1. NEXTILES-NotUploaded
+    - This is the local storage where if the file isn't uploaded on the cloud or when there is no internet connection. SDK will initially store this file here
+
+2. NEXTILES-Uploaded
+    - Nextiles Uploaded will ideally have all of your sessions data. CSVs in here are the files which are being already uploaded on cloud (which our SDK takes care of)
