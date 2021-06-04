@@ -108,10 +108,12 @@ For ex: to get the device's name: ```deviceObject.name```, to get device's UUID:
 #### NextilesDeviceType
 In our SDK, you will need to define what type of device one is and the device which you are trying to connect and that's where NextilesDeviceType structure comes handy. 
 NextilesDeviceType has:
-``` 1. SLEEVE
+``` 
+    1. SLEEVE
     2. KNEEBRACE
     3. SOCK
     4. MAT
+    
 ```
 so you can use it as: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.MAT```
 
