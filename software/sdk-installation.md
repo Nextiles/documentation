@@ -132,7 +132,7 @@ NextilesSDK comes with many features and some of them are:
 
 1. **One time Registration**:
    
-   To use the Nextiles SDK, you will need to register with us at least once. This request tries to register the user within our system and stores the person in the device's storage. Once you have registered, you can easily use the SDK and it's properties.
+   To connect to a Nextiles Device, you will need to register the user with Nextiles. This request tries to register the user within our system and stores the User data in your application. Once you have registered, you can easily use the SDK and it's properties.
    To do this, you can use SDK's `registerUser(username:String,role_type:String,organization:String)` function, which takes 3 arguments: 
    -    username, is the unique username, 
    -    role_type, is the role_type of the user, i.e., if it's a Tester, Developer, Guest, Athlete etc.,
