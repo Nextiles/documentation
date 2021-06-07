@@ -1,10 +1,10 @@
 # NextilesSDK
 
-Leverage the cutting edge Nextiles Technology, with Nextiles SDK and power your application with raw data stream. 
+Leverage the cutting edge Nextiles Technology, with Nextiles SDK and power your application with raw data stream.
 
-The following document talks about how to integrate the SDK in one's application. The document also provides a walkthrough on after installing the SDK; how to connect or disconnect a device, extract raw data and many other cool features.
+The following document describes how to integrate the SDK into an application. The document also provides a walkthrough on after installing the SDK; how to connect or disconnect a device, extract raw data and many other cool features.
 
-Note: BLE Devices and the technology is out of this scope. You may want to read through [Bluetooth Connections](https://developer.apple.com/bluetooth/), if you want to dive deeper into it. 
+Note: BLE Devices and the technology is out of this scope. You may want to read through [Bluetooth Connections](https://developer.apple.com/bluetooth/), if you want to dive deeper into it.
 
 ## Platform Support
 -   ios 13.0 or higher
@@ -27,8 +27,8 @@ Note: BLE Devices and the technology is out of this scope. You may want to read 
     - Consider Characteristics as data points which you can listen to, of a Nextiles device. NextilesSDK acts as a wrapper and provides raw, calculated data points for, acceleration, gyration, pressure, torque, etc.
 
 6. TIME_INTERVAL
-    - is a time interval which decides if the data should be stored in a CSV and create a new CSV to accomodate the live data stream. It's an interval by which SDK breaks the CSVs 
- 
+    - is a time interval which decides if the data should be stored in a CSV and create a new CSV to accomodate the live data stream. It's an interval by which SDK breaks the CSVs
+
 7. Nextiles Metrics
     Nextiles Metrics are the field types or parameters which a Nextiles Device can track. To make it easier for clients, we have made these specific definitions.     And these are:    
     - NEXTILES_BATTERY
@@ -37,7 +37,7 @@ Note: BLE Devices and the technology is out of this scope. You may want to read 
     - NEXTILES_MAGNET
     - NEXTILES_ANGULAR
     - NEXTILES_ENVIRONMENT
-    
+
     This would be useful in Step 5. Live Data Stream in [**Use NextilesSDK and it's features**](###Use-NextilesSDK-and-it's-features)
 
 ## Install Nextiles SDK via SPM (Swift package manager)
@@ -56,12 +56,12 @@ Note: BLE Devices and the technology is out of this scope. You may want to read 
 ![Github Token](readme_images/github_token.png)
 
 
-Note:- If you see an error: "The remote repository could not be accessed" then it's possibly cause of the already attached 
+Note:- If you see an error: "The remote repository could not be accessed" then it's possibly cause of the already attached
 Github account to your XCode. Current git configuration doesn't have the token in it.
 
 ![Error](readme_images/Error.png)
 
-If you'd go to your menu XCode > Preferences > Account, you'll see the github account/or a Git account there. 
+If you'd go to your menu XCode > Preferences > Account, you'll see the github account/or a Git account there.
 ![Accounts Github](readme_images/accounts_github.png)
 
 A fix is to remove that account and try from the step 1 again and this time XCode will prompt you for the **Account** and **Token**
@@ -109,20 +109,20 @@ We provide a Nextiles Device struct for you to interact with a device. This stru
         public var rssi: Int? = nil
         public var connected: Bool = false
     }
-    
+
 ```
-So, now if you have a device object, you can easily access its features. 
+So, now if you have a device object, you can easily access its features.
 For ex: to get the device's name: ```deviceObject.name```, to get device's UUID: ```deviceObject.id```, in string format ```deviceObject.id.uuidString```.
 
 ### NextilesDeviceType
-In our SDK, you will need to define what type of device one is and the device which you are trying to connect and that's where NextilesDeviceType structure comes handy. 
+In our SDK, you will need to define what type of device one is and the device which you are trying to connect and that's where NextilesDeviceType structure comes handy.
 NextilesDeviceType has:
-``` 
+```
     1. SLEEVE
     2. KNEEBRACE
     3. SOCK
     4. MAT
-    
+
 ```
 so you can use it as: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.MAT```
 
@@ -131,13 +131,13 @@ Now that the SDK is available for use, it's time to see how we can use it.
 NextilesSDK comes with many features and some of them are:
 
 1. **One time Registration**:
-   
+
    To connect to a Nextiles Device, you will need to register the user with Nextiles. This request tries to register the user within our system and stores the User data in your application. Once you have registered, you can easily use the SDK and it's properties.
-   To do this, you can use SDK's `registerUser(username:String,role_type:String,organization:String)` function, which takes 3 arguments: 
-   -    username, is the unique username, 
+   To do this, you can use SDK's `registerUser(username:String,role_type:String,organization:String)` function, which takes 3 arguments:
+   -    username, is the unique username,
    -    role_type, is the role_type of the user, i.e., if it's a Tester, Developer, Guest, Athlete etc.,
    -    Organization, is the organization which the user is connected to.
-  
+
     **Username is unique, per role_type, per organization. You cannot have same username, with same role_type in an organization.(At least for now)**
 
     You can use ```sdk.getUser()``` function to check if the user is being set or if the registration is required. If ```sdk.getUser()``` returns ```nil```, then you'll need to invoke ```registerUser()``` function.
@@ -152,7 +152,7 @@ NextilesSDK comes with many features and some of them are:
         ...
     ```
 
-    Now, that you have registered, you can use 
+    Now, that you have registered, you can use
     ``` sdk.getUser() ``` function to see if the user has being set. If the user hasn't being set and you don't receive anything in the ```getUser()``` then you cannot use the NextilesSDK functionality.
     #### Usage/Example:
 
@@ -169,28 +169,28 @@ NextilesSDK comes with many features and some of them are:
 
 
 2. **Scanning**:
-        
+
     You can scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
     #### Usage/Example:
     ``` Swift
         import SwiftUI
         import NextilesSDK
         ...
-        
+
         var sdk = NextilesSDK()
         sdk.startScan() // can be done on a button click or any other event you like
         ...
-        
+
     ```
     To get the list of devices, use SDK's ```getPeripherals()``` function.
-    It returns a [@Published](https://developer.apple.com/documentation/combine/published) **Device** List (any change in the list, makes your UI reload automatically). 
+    It returns a [@Published](https://developer.apple.com/documentation/combine/published) **Device** List (any change in the list, makes your UI reload automatically).
 
     #### Usage/Example :
     ``` Swift
         var sdk = NextilesSDK()
 
         ...
-        
+
         {
             List{
                     ForEach(sdk.getPeripherals(),id:\.id){
@@ -202,12 +202,12 @@ NextilesSDK comes with many features and some of them are:
                     }
             }
         }
-        
+
     ```
     Here, ```getPeripherals()``` returns the list of devices which are discoverable and as is visible in the above snippet, we can access device attributes as well.
 
 3. **Connecting**  
-    - To connect a device, use SDK's ``` connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String. 
+    - To connect a device, use SDK's ``` connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String.
     - You can check if the device is connected by using, ``` getConnectedDevicesListInDeviceForm ``` function. The following function returns a @Published list, which you can attach a listener to, so as soon as the device is connected it updates all its subscribers.
 
    #### Usage/Example:
@@ -223,22 +223,22 @@ NextilesSDK comes with many features and some of them are:
        var body: some View {
          Text("Hello World")
                .onChange(of: sdk.getConnectedDevicesListInDeviceForm(), perform: { value in
-               
+
                // here value is a list of all the connectedDevices, in case if you're trying to connect multiple devices.
                // you can have your own logic to see if the list contains the device or not
-               
+
                    value.forEach{ _device in
                        if _device.id == self.device?.id{
-                       
+
                            // Now the device is connected, you can subscribe to it (shown in step 4.), or do your after connection logic
                            print("Device is connected")
-                       
+
                        }
                    }
                })
        }
      }
-     
+
    ```
    As shown in the above example, ```sdk.getConnectedDevicesListInDeviceForm()``` makes our life easier by providing a @Published list, so we don't have to worry about re-rendering the UI.
 
@@ -260,7 +260,7 @@ NextilesSDK comes with many features and some of them are:
         }
     }
     ```
-    To check if the device is subscribed, you can use SDK's ``` getSubscribedDevices() ``` function, which returns a dictionary of [String:Bool], where key will be the device's UUID (in String format) and value is True or False. Similar to ``` getPeripherals() ```, this also publishes an event which you can listen to. If a device is subscribed or unsubscribed, it reflect the change. 
+    To check if the device is subscribed, you can use SDK's ``` getSubscribedDevices() ``` function, which returns a dictionary of [String:Bool], where key will be the device's UUID (in String format) and value is True or False. Similar to ``` getPeripherals() ```, this also publishes an event which you can listen to. If a device is subscribed or unsubscribed, it reflect the change.
 
     #### Usage/Example:
     ``` Swift
@@ -278,13 +278,13 @@ NextilesSDK comes with many features and some of them are:
     Now that we have subscribed to the device, the data reading is real. Nextiles Device is emitting data, the SDK is reading and storing it in your application's local storage (Documents folder). If internet connection is on, it's also uploading data to the cloud, to maintain a copy of that data. To see the data follow next steps.
 
 5. **Live Data Stream**
-    
+
     This is where the Nextiles SDK becomes more powerful, where not only the data is being stored in CSV formats but also this SDK provides you **Published Objects** handles to which you can attach a listener and see the data in real time. You can plot real time charts on top of this data.
 
     You can use ``` getDeviceListeners(_ device_id:String, _ feature: String) ``` function, which takes two arguments:
         -  device_id: Device's UUID in String format
         -  feature: the metric you want to listen to, like "acceleration", "gyration", "angular", etc.
-    
+
     #### Usage/Example:
     ``` Swift
         import Swift
@@ -305,27 +305,27 @@ NextilesSDK comes with many features and some of them are:
     ### More Information on Metrics
     All these metrics returns a [PassthroughSubject](https://developer.apple.com/documentation/combine/passthroughsubject) in a **[String]** format.
     -   NEXTILES_BATTERY
-        
+
         shows the device's battery. Expect this value to be a list of count 1.
     -   NEXTILES_ACCELERATION
 
         returns the calculated acceleration at any given time. Expect this to be a list of count 3 and of format `[ax, ay, az]`, where:
-        
-        - ax is the acceleration in x axis, 
+
+        - ax is the acceleration in x axis,
         - ay is the acceleration in y axis,
         - az is the acceleration in z axis
 
     - NEXTILES_GYRATION
-    
+
     returns the calculated gyration at any given time. Expect this to be a list of count 3 and of format `[gx, gy, gz]`, where:
-        
+
         -  gx is the gyration in x axis,
         -  gy is the gyration in y axis,
         -  gz is the gyration in z axis
     - NEXTILES_MAGNET
-        
+
         returns the calculated gyration at any given time. Expect this to be a list of count 3 and of format `[mx, my, mz]`, where:
-        
+
         -  mx is the magnet in x axis,
         -  my is the magnet in y axis,
         -  mz is the magnet in z axis
@@ -335,7 +335,7 @@ NextilesSDK comes with many features and some of them are:
         returns the calculated angular at any given time. Expect this to be a list of count 1 and of format `[a0]`, where:
 
         -  a0 is angular rotation
-    
+
     - NEXTILES_ENVIRONMENT
 
         returns the calculated environment parameters at any given time. Expect this to be a list of count of 3 and of format `[temp, hum, alt]`, where:
@@ -347,7 +347,7 @@ NextilesSDK comes with many features and some of them are:
 
 6. **Unsubscribe/ Generating CSVs**
 
-    Unsubscribing is more like a pause event in a play-pause-stop cycle. When the user is tired and doesn't want to track the data or just want a break, that's when we will use SDK's ``` unsubscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. Use this function to stop listening to the Nextiles Device. 
+    Unsubscribing is more like a pause event in a play-pause-stop cycle. When the user is tired and doesn't want to track the data or just want a break, that's when we will use SDK's ``` unsubscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. Use this function to stop listening to the Nextiles Device.
 
     SDK takes care of generating the CSVs on behalf of us.
 
@@ -365,19 +365,19 @@ NextilesSDK comes with many features and some of them are:
     Disconnecting the device is as easy as connecting. Use SDK's `disconnectDevice(device:Device)` function, which takes one argument of Device type Object.
 
     #### Usage/Example:
-    
+
     ``` Swift
     import SwiftUI
     import NextilesSDK
-    
+
     @Binding var device:Device
 
     struct Someview: some View{
         var sdk = NextilesSDK()
         ...
-        
+
         sdk.disconnectDevice(self.device)
-        
+
         ...
     }
 
