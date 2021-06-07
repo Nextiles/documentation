@@ -7,7 +7,8 @@ The following document talks about how to integrate the SDK in one's application
 Note: BLE Devices and the technology is out of this scope. You may want to read through [Bluetooth Connections](https://developer.apple.com/bluetooth/), if you want to dive deeper into it. 
 
 ## Platform Support
--   ios 13.0 or higher
+-   ios 11.0 or higher
+-   Package uses Swift5.3
 
 ## Terminologies
 
@@ -27,7 +28,7 @@ Note: BLE Devices and the technology is out of this scope. You may want to read 
     - Consider Characteristics as data points which you can listen to, of a Nextiles device. NextilesSDK acts as a wrapper and provides raw, calculated data points for, acceleration, gyration, pressure, torque, etc.
 
 6. TIME_INTERVAL
-    - is a time interval which decides if the data should be stored in a CSV and create a new CSV to accomodate the live data stream. It's an interval by which SDK breaks the CSVs 
+    - is a time interval which decides if the data should be stored in a CSV and create a new CSV to accomodate the live data stream. It's an interval by which SDK breaks the CSVs. By default it's set to `60 Seconds`.
  
 7. Nextiles Metrics
     Nextiles Metrics are the field types or parameters which a Nextiles Device can track. To make it easier for clients, we have made these specific definitions.     And these are:    
@@ -116,14 +117,12 @@ For ex: to get the device's name: ```deviceObject.name```, to get device's UUID:
 
 ### NextilesDeviceType
 In our SDK, you will need to define what type of device one is and the device which you are trying to connect and that's where NextilesDeviceType structure comes handy. 
-NextilesDeviceType has:
-``` 
-    1. SLEEVE
-    2. KNEEBRACE
-    3. SOCK
-    4. MAT
-    
-```
+NextilesDeviceType has: 
+ 1. SLEEVE
+ 2. KNEEBRACE
+ 3. SOCK
+ 4. MAT
+
 so you can use it as: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.MAT```
 
 ## Use NextilesSDK and it's features
@@ -358,7 +357,7 @@ NextilesSDK comes with many features and some of them are:
 
     2. NEXTILES-Uploaded
         - Nextiles Uploaded will ideally have all of your sessions data. CSVs in here are the files which are being already uploaded on cloud (which our SDK takes care of)
-
+    
 
 7. **Disconnect Device**
 
