@@ -387,4 +387,4 @@ NextilesSDK comes with many features and some of them are:
 
 
 ## Nextiles API Documentation
-Nextiles API gives you a way to fetch data stored in cloud. [Read More]()
+Nextiles API gives you a way to fetch data stored in cloud. [Read More](https://github.com/Nextiles/documentation/blob/master/software/api-documentation.md)
