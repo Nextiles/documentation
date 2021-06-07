@@ -38,7 +38,7 @@ x-api-key : <access-key-given-by-Nextiles>
 ```
 
 | Parameters    | Type          | Description  |
-| ------------- |:-------------:| -----:|
+| ------------- |:-------------:| :-----|
 | username      | String | Required. Unique username |
 | role_type     | String |  Required. Role type of the user. What exactly the user's role is. For ex.: Athlete, Guest, Tester, etc.|
 | organization  | String | What organization the user belongs to|
