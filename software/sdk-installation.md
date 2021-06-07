@@ -383,3 +383,8 @@ NextilesSDK comes with many features and some of them are:
 
     ```
     And now after disconnecting, if you want to verify, you can use `sdk.getConnectedDevicesListInDeviceForm` function, which is mentioned above to see if the device is no longer available in the list.
+
+
+
+## Nextiles API Documentation
+Nextiles API gives you a way to fetch data stored in cloud. [Read More]()
