@@ -116,15 +116,6 @@ So, now if you have a device object, you can easily access its features.
 For ex: to get the device's name: ```deviceObject.name```, to get device's UUID: ```deviceObject.id```, in string format ```deviceObject.id.uuidString```.
 
 ### NextilesDeviceType
-<<<<<<< HEAD
-In our SDK, you will need to define what type of device one is and the device which you are trying to connect and that's where NextilesDeviceType structure comes handy. 
-NextilesDeviceType has: 
- 1. SLEEVE
- 2. KNEEBRACE
- 3. SOCK
- 4. MAT
-
-=======
 In our SDK, you will need to define what type of device one is and the device which you are trying to connect and that's where NextilesDeviceType structure comes handy.
 NextilesDeviceType has:
 ```
@@ -134,7 +125,6 @@ NextilesDeviceType has:
     4. MAT
 
 ```
->>>>>>> f54005c88580c7c19feb46f46ac38ed084bf19b2
 so you can use it as: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.MAT```
 
 ## Use NextilesSDK and it's features
