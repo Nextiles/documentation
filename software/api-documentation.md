@@ -1,52 +1,51 @@
 # Nextiles API Documentation
-The following documentation talks about how one can leverage Nextiles API and get the raw stream of data from Nextiles' servers. 
+The following documentation discusses how to leverage Nextiles API to get stored raw data from Nextiles' servers. To access the API you:
 
-To access the API you:
-1. would need to have a user registered
-2. access key
+1. A registered user
+  - username
+  - organization
+  - role
+2. An access key provided by Nextiles
 
+## Implementation
 
-## Use Cases
-1. Integrate the API within your application by just invoking the following endpoint and get the raw stream, which can be filtered, analyzed and optimized
+API integration requires invoking the following endpoint to get the stored raw data, which can be filtered, analyzed and optimized as see fit.
 
-## Get Endpoint
-```http
+### Get Endpoint
+```bash
 GET https://68a9g89ek2.execute-api.us-east-1.amazonaws.com/alpha/trainingdata
 ```
-### Implementation
 
-Here is an example of invoking the endpoint via **curl command**
-
+Here is an example of invoking the endpoint via [curl](https://curl.se/)
 
 ```bash
 curl -X GET -H "x-api-key: <access-key>" 'https://68a9g89ek2.execute-api.us-east-1.amazonaws.com/alpha/trainingdata/?role_type=Athlete&username=TestingUniqueUsername'
 ```
 
-Another example of the api with passing the range, `start_range` as `20210325180053` (`March 25th, 2021, 18:00:53`) and `end_range` as `20210529180000` (`May 29th,2021,18:00:00`) :
+Another example of the api with passing the range, `start_range` as `20210325180053` (March 25th, 2021, 18:00:53) and `end_range` as `20210529180000` (May 29th,2021,18:00:00) :
 
 ```bash
 curl -X GET -H "x-api-key: <access-key>" 'https://68a9g89ek2.execute-api.us-east-1.amazonaws.com/alpha/trainingdata/?role_type=Athlete&username=TestingUniqueUsername&start_range=20210325180053&end_range=20210529180000'
 ```
 
-
 ## Authorization
-You will need the api-key which Nextiles provide and add it to the Headers.
+An api-key will be provided by Nextiles which needs to be added to the header for API authorization.
 
-```http
+```bash
 Headers
 x-api-key : <access-key-given-by-Nextiles>
 ```
 
 | Parameters    | Type          | Description  |
 | ------------- |:-------------:| :-----|
-| username      | String | Required. Unique username |
-| role_type     | String |  Required. Role type of the user. What exactly the user's role is. For ex.: Athlete, Guest, Tester, etc.|
-| organization  | String | What organization the user belongs to|
-| start_range| String | format: `YYYYmmddHHMMSS`, is the starting point for the range, where you want to look specifically|
-|end_range| String| format: `YYYYmmddHHMMSS`, is the ending point for the range.|
+| username      | String | Unique username (required) |
+| role_type     | String |  Role type of the user. What exactly the user's role is. For ex.: Athlete, Guest, Tester, etc. (required) |
+| organization  | String | What organization the user belongs to (e.g. your company) |
+| start_range| String | Start time in the form of year, month, day, time. Example: `YYYYmmddHHMMSS`. |
+|end_range| String| End time in the form of year, month, day, time. Example: `YYYYmmddHHMMSS`. |
 
-**Note: If start_range and end_range is not available, then API returns all of the data available.**
-**If end_range is not available, API returns all of the data starting from the start_range**
+**Note:** <br>
+If `start_range` and `end_range` is not available, then API returns all of the data available. If `end_range` is not available, API returns all of the data starting from the `start_range`.
 
 ## Responses
 
@@ -70,7 +69,7 @@ Response is in the json format. Data format is an array of objects and raw Nexti
 ## Status Codes
 
 | Status Code    | Description  |
-| ------------- |:-----:|
+| ------------- |:-----|
 | 200      | Ok |
 | 400     | BAD REQUEST/ Invalid Parameters |
 | 403   | Forbidden|
