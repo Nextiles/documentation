@@ -1,10 +1,23 @@
-# NextilesSDK
+## NextilesSDK
 
 Leverage the cutting edge Nextiles Technology, with Nextiles SDK and power your application with raw data stream.
 
-The following document describes how to integrate the SDK into an application. The document also provides a walkthrough on after installing the SDK; how to connect or disconnect a device, extract raw data and many other cool features.
+The following document describes how to integrate the SDK into an application, how to connect or disconnect a device, extract raw data and many other exciting features.
 
-Note: BLE Devices and the technology is out of this scope. You may want to read through [Bluetooth Connections](https://developer.apple.com/bluetooth/), if you want to dive deeper into it.
+**Note**: BLE devices and Bluetooth Technology is out of this document's scope. Read more about [Bluetooth Connections](https://developer.apple.com/bluetooth/), if needed.
+
+## Table of Contents
+- [NextilesSDK](#nextilessdk)
+- [Table of Contents](#table-of-contents)
+- [Platform Support](#platform-support)
+- [Terminologies](#terminologies)
+- [Device struct and other definitions:](#device-struct-and-other-definitions)
+  - [NextilesDeviceType](#nextilesdevicetype)
+- [Install Nextiles SDK via SPM (Swift package manager)](#install-nextiles-sdk-via-spm-swift-package-manager)
+- [Use NextilesSDK and it's features](#use-nextilessdk-and-its-features)
+    - [Usage/Example:](#usageexample)
+- [Nextiles API Documentation](#nextiles-api-documentation)
+
 
 ## Platform Support
 -   ios 11.0 or higher
@@ -13,25 +26,25 @@ Note: BLE Devices and the technology is out of this scope. You may want to read 
 ## Terminologies
 
 1. Connect
-    - As the term says, this is when you connect a device, or establish a bluetooth connection with a BLE Device
+    - when trying to establish a bluetooth connection with the Nextiles device.
 
 2. Subscribe
-    - This is done only when the device is connected. You cannot subscribe to a device which is not connected. Subscribe in this document means subscribing to a BLE device characteristics.
+    - Subscribe, in this document refers to, subscribing to a Nextiles device's characteristics. Subscribtion to a device, which is not connected, is not allowed. This is done only after the device is connected.
 
 3. Unsubscribe
-    - When user doesn't want to listen to the BLE device, but also doesn't want to disconnect. That's where we need to do Unsubscribe.
+    - Unsubscribe, refers to, unsubscribing from the device's characteristics. Remember, the device would still be connected, unless disconnected.
 
 4. Disconenct
-    - When user want to disconnect a connected device.
+    - Disconnecting, refers to, disconnect an already connected device.
 
 5. Characteristics
-    - Consider Characteristics as data points which you can listen to, of a Nextiles device. NextilesSDK acts as a wrapper and provides raw, calculated data points for, acceleration, gyration, pressure, torque, etc.
+    - Consider characteristics as metrics of a Nextiles device, which SDK can listen to. NextilesSDK acts as a wrapper over these characteristics and provides raw, calculated metrics for acceleration, gyration, pressure, torque, etc.
 
 6. TIME_INTERVAL
-    - is a time interval which decides if the data should be stored in a CSV and create a new CSV to accomodate the live data stream. It's an interval by which SDK breaks the CSVs
+    - is a time interval which decides if the data should be stored in a CSV. It's a time interval by which SDK splits the CSVs and maintains the file size. By default it's set to  `60 SECONDS`
 
 7. Nextiles Metrics
-    Nextiles Metrics are the field types or parameters which a Nextiles Device can track. To make it easier for clients, we have made these specific definitions.     And these are:    
+    Nextiles Metrics are the parameters which a Nextiles Device can track and emitt. To make it easier for users, following specific definitions are provided:
     - NEXTILES_BATTERY
     - NEXTILES_ACCELERATION
     - NEXTILES_GYRATION
@@ -39,70 +52,13 @@ Note: BLE Devices and the technology is out of this scope. You may want to read 
     - NEXTILES_ANGULAR
     - NEXTILES_ENVIRONMENT
 
-    This would be useful in Step 5. Live Data Stream in [**Use NextilesSDK and it's features**](###Use-NextilesSDK-and-it's-features)
-
-## Install Nextiles SDK via SPM (Swift package manager)
-
-1. Swift Package Manager is distributed with Xcode. To start adding the Nextiles SDK to your iOS project, open your project in Xcode and select File > Swift Packages > Add Package Dependency. Note:- XCode is at 12.5, at the time of this document.
-
-![Add Package Dependency](readme_images/add_package_dependency.png)
-
-2. Enter the Github repo URL (https://github.com/Nextiles/mobile-ios-sdk/) into the search bar and click Next.
-
-![Choose Package Repo](readme_images/choose_package_repo.png)
-
-
-3. You'll see a window for **Account** and **Token**. Nextiles' SDK Repository is private and hence you would need the token to be able to leverage the SDK. Need not to worry cause you will get that token from us. Use your github account for `account` and the token which we'll provide in `token`. And click **Next**
-
-![Github Token](readme_images/github_token.png)
-
-
-Note:- If you see an error: "The remote repository could not be accessed" then it's possibly cause of the already attached
-Github account to your XCode. Current git configuration doesn't have the token in it.
-
-![Error](readme_images/Error.png)
-
-If you'd go to your menu XCode > Preferences > Account, you'll see the github account/or a Git account there.
-![Accounts Github](readme_images/accounts_github.png)
-
-A fix is to remove that account and try from the step 1 again and this time XCode will prompt you for the **Account** and **Token**
-![Github Token](readme_images/github_token.png)
-
-
-
-4. You'll see the SDK repo rules for which version of SDK you want Swift Package Manager to install. Choose the second rule, branch, as it will try to leverage the dev branch (currently, as we're on the beta stage for the SDK, we'll select this), then click Next.
-
-![Choose Package Options](readme_images/choose_package_options.png)
-
-
-5. NextilesSDK should be automatically selected as it's the only package in this repo. Click **Finish**
-
-![Add Package](readme_images/add_package_to_TestingApp.png)
-
-
-6. You can always go back and modify which SPM packages are included in your project by opening the Swift Packages tab for your project: Click on the **Project** file in the **Xcode navigator**, then click on your project's icon, then select the **Swift Packages** tab.
-
-![Packages List](readme_images/packages_list.png)
-
-
-7. In your app code, explicitly import NextilesSDK and test the SDK like this:
-``` Swift
-import SwiftUI
-import NextilesSDK
-
-struct ContentView:View{
-    var sdk = NextilesSDK()
-    var body:some View{
-      MainViewComponent()
-    }
-}
-
-```
+    Read More about it, in `Step 5. Live Data Stream` in [**Use NextilesSDK and it's features**](###Use-NextilesSDK-and-it's-features)
 
 ## Device struct and other definitions:
-We provide a Nextiles Device struct for you to interact with a device. This struct gives you access to device's UUID, address, name, etc. For your convinience, we're going to define the structure here:
-``` Swift
+We provide a Nextiles Device struct for you to interact with a device.
+Nextiles SDK provide a struct: `Device` to interact with a NX (Nextiles) device. This struct gives access to a device's UUID, address, name, etc. For convinience, let's mention the definition of the structure here:
 
+``` Swift
     public struct Device{
         public let name: String
         public let id: UUID
@@ -110,38 +66,96 @@ We provide a Nextiles Device struct for you to interact with a device. This stru
         public var rssi: Int? = nil
         public var connected: Bool = false
     }
-
 ```
-So, now if you have a device object, you can easily access its features.
+So, now if a device object is available, its features could be easily accessed.
 For ex: to get the device's name: ```deviceObject.name```, to get device's UUID: ```deviceObject.id```, in string format ```deviceObject.id.uuidString```.
 
 ### NextilesDeviceType
-In our SDK, you will need to define what type of device one is and the device which you are trying to connect and that's where NextilesDeviceType structure comes handy.
+In the SDK, there'll be a need to define what type of device user is trying to connect and that's where `NextilesDeviceType` struct comes handy.
 NextilesDeviceType has:
 ```
     1. SLEEVE
     2. KNEEBRACE
     3. SOCK
     4. MAT
-
 ```
-so you can use it as: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.MAT```
+so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.MAT```
+
+## Install Nextiles SDK via SPM (Swift package manager)
+
+1. Swift Package Manager is distributed with Xcode. To start adding the Nextiles SDK to an iOS project, open the project in Xcode and select File > Swift Packages > Add Package Dependency. **Note**:- XCode is at 12.5, at the time of this document.
+![Add Package Dependency](readme_images/add_package_dependency.png)
+
+2. Enter the Github repo URL (https://github.com/Nextiles/mobile-ios-sdk/) into the search bar and click Next.
+
+    ![Choose Package Repo](readme_images/choose_package_repo.png)
+
+
+3. Sign in to Github account window should appear, asking for **Account** and **Token**. Nextiles SDK Repository is private and hence there's a need of an access token, to leverage the SDK. Need not to worry cause Nextiles will provide that token. 
+
+    Use the github account name for `account` and the access token for `token`. And click **Next**
+
+    ![Github Token](readme_images/github_token.png)
+
+
+    Note:- If there's an error: "The remote repository could not be accessed" then it's possibly cause of the already attached Github account in XCode. And it's failing because current git configuration doesn't have the token in it.
+
+    ![Error](readme_images/Error.png)
+
+    Go to the menu XCode > Preferences > Account, and there should be a github account/or a Git account visible.
+    ![Accounts Github](readme_images/accounts_github.png)
+
+    If that's the case, then a quick fix is to remove that account and try from the step 1 again and this time XCode will prompt for the **Account** and **Token**
+    ![Github Token](readme_images/github_token.png)
+
+
+
+4. SDK repo rules window should appear asking for which version of SDK, Xcode should install. Choose the second rule, `branch`, as it will try to leverage the dev branch, then click Next.
+
+    ![Choose Package Options](readme_images/choose_package_options.png)
+
+
+5. NextilesSDK should be automatically selected as it's the only package in this repo. Click **Finish**
+
+    ![Add Package](readme_images/add_package_to_TestingApp.png)
+
+
+6. To list the SPM packages which are included in the project, navigate to the list by opening the Swift Packages tab for the project like: 
+
+    Click on the **Project** file in the **Xcode navigator**, then click on the project's icon, then select the **Swift Packages** tab.
+![Packages List](readme_images/packages_list.png)
+
+
+7. In your app code, explicitly import `NextilesSDK` and test the SDK like this:
+
+    ``` Swift
+    import SwiftUI
+    import NextilesSDK
+
+    struct ContentView:View{
+        var sdk = NextilesSDK()
+        var body:some View{
+        MainViewComponent()
+        }
+    }
+
+    ```
 
 ## Use NextilesSDK and it's features
-Now that the SDK is available for use, it's time to see how we can use it.
-NextilesSDK comes with many features and some of them are:
+Now that the SDK is available, it's time to see how exactly to use it.
+Usually, these would be the steps (in this order, but also depends on the implementation):
 
 1. **One time Registration**:
 
-   To connect to a Nextiles Device, you will need to register the user with Nextiles. This request tries to register the user within our system and stores the User data in your application. Once you have registered, you can easily use the SDK and it's properties.
-   To do this, you can use SDK's `registerUser(username:String,role_type:String,organization:String)` function, which takes 3 arguments:
+   To connect to a Nextiles Device, register the user with Nextiles first. This request tries to register the user within Nextiles servers and stores the User data in the user's application.
+   To do this, use SDK's `registerUser(username:String,role_type:String,organization:String)` function, which takes 3 arguments:
    -    username, is the unique username,
    -    role_type, is the role_type of the user, i.e., if it's a Tester, Developer, Guest, Athlete etc.,
    -    Organization, is the organization which the user is connected to.
 
-    **Username is unique, per role_type, per organization. You cannot have same username, with same role_type in an organization.(At least for now)**
+    **Username is unique, per role_type, per organization. It's not possible to have same username, with the same role_type in an organization.(At least for now)**
 
-    You can use ```sdk.getUser()``` function to check if the user is being set or if the registration is required. If ```sdk.getUser()``` returns ```nil```, then you'll need to invoke ```registerUser()``` function.
+    Use ```sdk.getUser()``` function to check if the user is being set or if the registration is required. If ```sdk.getUser()``` returns ```nil```, then we'll need to invoke ```registerUser()``` function.
 
     #### Usage/Example:
     ```Swift
@@ -153,8 +167,9 @@ NextilesSDK comes with many features and some of them are:
         ...
     ```
 
-    Now, that you have registered, you can use
-    ``` sdk.getUser() ``` function to see if the user has being set. If the user hasn't being set and you don't receive anything in the ```getUser()``` then you cannot use the NextilesSDK functionality.
+    Now, that the user is registered, use
+    ``` sdk.getUser() ``` function to see if the user has being set. If the user hasn't been set in the ```getUser()``` then the NextilesSDK functionality (like connecting a device) can't be used.
+
     #### Usage/Example:
 
     ``` Swift
@@ -171,7 +186,7 @@ NextilesSDK comes with many features and some of them are:
 
 2. **Scanning**:
 
-    You can scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
+    Scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
     #### Usage/Example:
     ``` Swift
         import SwiftUI
@@ -209,7 +224,7 @@ NextilesSDK comes with many features and some of them are:
 
 3. **Connecting**  
     - To connect a device, use SDK's ``` connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String.
-    - You can check if the device is connected by using, ``` getConnectedDevicesListInDeviceForm ``` function. The following function returns a @Published list, which you can attach a listener to, so as soon as the device is connected it updates all its subscribers.
+    - Check if the device is connected by using, ``` getConnectedDevicesListInDeviceForm ``` function. The following function returns a @Published list, which you can attach a listener to, so as soon as the device is connected it updates all its subscribers.
 
    #### Usage/Example:
    ``` Swift
@@ -247,7 +262,7 @@ NextilesSDK comes with many features and some of them are:
 
 4. **Subscribe/Reading Data**
 
-    Once the device is connected, we are ready to read the data and for that we will subscribe to the device's characteristics. To subscribe and start reading the data we will use ``` subscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. While the device is being subscribed, our SDK reads the data emitted by the device and all of that data would be stored as soon as we stop (unsubscribe or disconnect) or the TIME_INTERVAL exceeds.
+    Once the device is connected, the SDK can read the data and for that subscribe to the device's characteristics. Use ``` subscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. While the device is being subscribed, SDK reads the data emitted by the device and all of that data would be stored as soon as we stop (unsubscribe or disconnect) or if the TIME_INTERVAL exceeds.
 
     #### Usage/Example:
     ```Swift
@@ -261,7 +276,7 @@ NextilesSDK comes with many features and some of them are:
         }
     }
     ```
-    To check if the device is subscribed, you can use SDK's ``` getSubscribedDevices() ``` function, which returns a dictionary of [String:Bool], where key will be the device's UUID (in String format) and value is True or False. Similar to ``` getPeripherals() ```, this also publishes an event which you can listen to. If a device is subscribed or unsubscribed, it reflect the change.
+    To check if the device is subscribed, use SDK's ``` getSubscribedDevices() ``` function, which returns a dictionary of [String:Bool], where key will be the device's UUID (in String format) and value is True or False. Similar to ``` getPeripherals() ```, this also publishes an event which we can listen to. If a device is subscribed or unsubscribed, it reflect the change.
 
     #### Usage/Example:
     ``` Swift
@@ -276,13 +291,13 @@ NextilesSDK comes with many features and some of them are:
         })
     }
     ```
-    Now that we have subscribed to the device, the data reading is real. Nextiles Device is emitting data, the SDK is reading and storing it in your application's local storage (Documents folder). If internet connection is on, it's also uploading data to the cloud, to maintain a copy of that data. To see the data follow next steps.
+    Now that we have subscribed to the device, the data reading is getting real. Nextiles Device is emitting data, the SDK is reading and storing it in application's local storage (Documents folder). If internet connection is on, it's also uploading data to the cloud, to maintain a copy of that data. To see the data in a live stream, follow next steps.
 
 5. **Live Data Stream**
 
-    This is where the Nextiles SDK becomes more powerful, where not only the data is being stored in CSV formats but also this SDK provides you **Published Objects** handles to which you can attach a listener and see the data in real time. You can plot real time charts on top of this data.
+    This is where the Nextiles SDK becomes more powerful, where not only the data is being stored in CSV formats but also this SDK provides **Published Objects** handles to which one can easily attach a listener and see the data in real time. Realtime charts can be plotted on this live stream feed.
 
-    You can use ``` getDeviceListeners(_ device_id:String, _ feature: String) ``` function, which takes two arguments:
+    Use ``` getDeviceListeners(_ device_id:String, _ feature: String) ``` function, which takes two arguments:
         -  device_id: Device's UUID in String format
         -  feature: the metric you want to listen to, like "acceleration", "gyration", "angular", etc.
 
@@ -348,7 +363,7 @@ NextilesSDK comes with many features and some of them are:
 
 6. **Unsubscribe/ Generating CSVs**
 
-    Unsubscribing is more like a pause event in a play-pause-stop cycle. When the user is tired and doesn't want to track the data or just want a break, that's when we will use SDK's ``` unsubscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. Use this function to stop listening to the Nextiles Device.
+    Unsubscribing is more like a pause event in a play-pause-stop cycle (when the user is tired or doesn't want to track the data). Use SDK's ``` unsubscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. Use this function to stop listening to the Nextiles Device.
 
     SDK takes care of generating the CSVs on behalf of us.
 
@@ -358,7 +373,7 @@ NextilesSDK comes with many features and some of them are:
         - This is the local storage where if the file isn't uploaded on the cloud or when there is no internet connection. SDK will initially store this file here
 
     2. NEXTILES-Uploaded
-        - Nextiles Uploaded will ideally have all of your sessions data. CSVs in here are the files which are being already uploaded on cloud (which our SDK takes care of)
+        - Nextiles Uploaded will ideally have all of your sessions data. CSVs in here are the files which are being already uploaded on cloud (which Nextiles SDK takes care of)
     
 
 7. **Disconnect Device**
@@ -383,7 +398,7 @@ NextilesSDK comes with many features and some of them are:
     }
 
     ```
-    And now after disconnecting, if you want to verify, you can use `sdk.getConnectedDevicesListInDeviceForm` function, which is mentioned above to see if the device is no longer available in the list.
+    And now after disconnecting, use `sdk.getConnectedDevicesListInDeviceForm` function to verify if the device is disconnected. It's the same method mentioned above to check if the device is no longer available in the list.
 
 
 
