@@ -19,13 +19,13 @@ GET https://68a9g89ek2.execute-api.us-east-1.amazonaws.com/alpha/trainingdata
 Here is an example of invoking the endpoint via [curl](https://curl.se/)
 
 ```bash
-curl -X GET -H "x-api-key: <access-key>" 'https://68a9g89ek2.execute-api.us-east-1.amazonaws.com/alpha/trainingdata/?role_type=Athlete&username=TestingUniqueUsername'
+curl -X GET -H "x-api-key: <access-key>" 'https://68a9g89ek2.execute-api.us-east-1.amazonaws.com/alpha/trainingdata/?role_type=Athlete&username=TestingUniqueUsername&organization=Nextiles'
 ```
 
 Another example of the api with passing the range, `start_range` as `20210325180053` (March 25th, 2021, 18:00:53) and `end_range` as `20210529180000` (May 29th,2021,18:00:00) :
 
 ```bash
-curl -X GET -H "x-api-key: <access-key>" 'https://68a9g89ek2.execute-api.us-east-1.amazonaws.com/alpha/trainingdata/?role_type=Athlete&username=TestingUniqueUsername&start_range=20210325180053&end_range=20210529180000'
+curl -X GET -H "x-api-key: <access-key>" 'https://68a9g89ek2.execute-api.us-east-1.amazonaws.com/alpha/trainingdata/?role_type=Athlete&username=TestingUniqueUsername&organization=Nextiles&start_range=20210325180053&end_range=20210529180000'
 ```
 
 ## Authorization
@@ -40,7 +40,7 @@ x-api-key : <access-key-given-by-Nextiles>
 | ------------- |:-------------:| :-----|
 | username      | String | Unique username (required) |
 | role_type     | String |  Role type of the user. What exactly the user's role is. For ex.: Athlete, Guest, Tester, etc. (required) |
-| organization  | String | What organization the user belongs to (e.g. your company) |
+| organization  | String | What organization the user belongs to (e.g. your company) (required)|
 | start_range| String | Start time in the form of year, month, day, time. Example: `YYYYmmddHHMMSS`. |
 |end_range| String| End time in the form of year, month, day, time. Example: `YYYYmmddHHMMSS`. |
 

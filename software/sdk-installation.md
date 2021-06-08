@@ -106,6 +106,7 @@ so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KN
     ![Accounts Github](readme_images/accounts_github.png)
 
     If that's the case, then a quick fix is to remove that account and try from the step 1 again and this time XCode will prompt for the **Account** and **Token**
+    
     ![Github Token](readme_images/github_token.png)
 
 
