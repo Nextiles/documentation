@@ -148,12 +148,15 @@ Usually, these would be the steps (in this order, but also depends on the implem
 1. **One time Registration**:
 
    To connect to a Nextiles Device, register the user with Nextiles first. This request tries to register the user within Nextiles servers and stores the User data in the user's application.
+
+   Use `registerUser()` function to **login** as well. If it matches the credentials it will successfully return the login object.
+
    To do this, use SDK's `registerUser(username:String,role_type:String,organization:String)` function, which takes 3 arguments:
    -    username, is the unique username,
    -    role_type, is the role_type of the user, i.e., if it's a Tester, Developer, Guest, Athlete etc.,
    -    Organization, is the organization which the user is connected to.
 
-    **Username is unique, per role_type, per organization. It's not possible to have same username, with the same role_type in an organization.(At least for now)**
+    **Username is unique, per organization. It's not possible to have two same usernames in an organization.(At least for now)**
 
     Use ```sdk.getUser()``` function to check if the user is being set or if the registration is required. If ```sdk.getUser()``` returns ```nil```, then we'll need to invoke ```registerUser()``` function.
 
