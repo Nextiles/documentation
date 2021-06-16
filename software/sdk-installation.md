@@ -41,7 +41,7 @@ The following document describes how to integrate the SDK into an application, h
     - Consider characteristics as metrics of a Nextiles device, which SDK can listen to. NextilesSDK acts as a wrapper over these characteristics and provides raw, calculated metrics for acceleration, gyration, pressure, torque, etc.
 
 6. TIME_INTERVAL
-    - is a time interval which decides if the data should be stored in a CSV. It's a time interval by which SDK splits the CSVs and maintains the file size. By default it's set to  `60 SECONDS`
+    - is a time interval which decides if the data should be stored in a CSV. It's a time interval by which SDK splits the CSVs and maintains the file size. By default it's set to  `180 SECONDS`
 
 7. Nextiles Metrics
     Nextiles Metrics are the parameters which a Nextiles Device can track and emitt. To make it easier for users, following specific definitions are provided:
