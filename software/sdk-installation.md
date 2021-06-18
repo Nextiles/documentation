@@ -126,7 +126,7 @@ so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KN
     Click on the **Project** file in the **Xcode navigator**, then click on the project's icon, then select the **Swift Packages** tab.
 ![Packages List](readme_images/packages_list.png)
 
-7. NX-Info.plist file which is being provided by Nextiles is needed to be able to use it. If didn't receive the NX-Info.plist then reach out to one of the Nextiles Team member. If the NX-Info.plist is available then make sure it's available in the project's folder. <br> NX-Info.plist looks like this:
+7. NX-Info.plist file, provided by Nextiles is needed to be able to use the SDK. If didn't receive the NX-Info.plist then reach out to one of our Team member. If the NX-Info.plist is available then make sure the project is able to build properly. <br> NX-Info.plist looks like this:
 ![NX-Info.plist](readme_images/NX_INFO.plist_image.png)
 
 
