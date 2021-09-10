@@ -75,11 +75,11 @@ In the SDK, there'll be a need to define what type of device user is trying to c
 NextilesDeviceType has:
 ```
     1. SLEEVE
-    2. KNEEBRACE
+    2. KNEE
     3. SOCK
-    4. MAT
+    4. SURFACE
 ```
-so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.MAT```
+so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.SURFACE```
 
 ## Install Nextiles SDK via SPM (Swift package manager)
 
