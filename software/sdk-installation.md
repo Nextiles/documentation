@@ -326,7 +326,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
         }
     ```
     ### More Information on Metrics
-    All these metrics returns a [PassthroughSubject](https://developer.apple.com/documentation/combine/passthroughsubject) in a **[String]** format.
+    All these metrics returns a [PassthroughSubject](https://developer.apple.com/documentation/combine/passthroughsubject) in a **[String]** format. There metrics may change as per the product. But typically these are the global metrics which one should expect.
     -   NEXTILES_BATTERY
 
         shows the device's battery. Expect this value to be a list of count 1.
@@ -358,6 +358,11 @@ Usually, these would be the steps (in this order, but also depends on the implem
         returns the calculated angular at any given time. Expect this to be a list of count 1 and of format `[a0]`, where:
 
         -  a0 is angular rotation
+        
+        For our product, SOCK:
+        Expect this to be a list of count 3 and of format `[a0,a1,a2]`, where:
+        - a0, a1, a2 is the data coming from three sensors which are embedded in the sock
+        
 
     - NEXTILES_ENVIRONMENT
 
