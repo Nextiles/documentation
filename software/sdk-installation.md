@@ -162,45 +162,120 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
    To connect to a Nextiles Device, register the user with Nextiles first. This request tries to register the user within Nextiles servers and stores the User data in the user's application.
 
-   Use `registerUser()` function to **login** as well. If it matches the credentials it will successfully return the login object.
+   Use `registerNextilesUser()` function to **register** . If it matches the credentials it will successfully return the login object.
 
-   To do this, use SDK's `registerUser(username:String,role_type:String,organization:String)` function, which takes 3 arguments:
-   -    username, is the unique username,
-   -    role_type, is the role_type of the user, i.e., if it's a Tester, Developer, Guest, Athlete etc.,
-   -    Organization, is the organization which the user is connected to.
+   To do this, use SDK's `sdk.registerNextilesUser(user: User, completion: (Bool) -> ())` function, which takes 2 arguments:
+   -    user, is an object of User class,
+        -    An User initializer looks like this: **User(username: String, name: String, organization: String, age: Int?, weight: Int?, height: Int?)**
+             -    **username**, is the *unique username* for the user in an organization
+             -    **name**, is your *full name*
+             -    **organization**, is the *organization* which the user belongs to
+             -    **age**, is the *age* of the user, *optional*
+             -    **weight**, is the *weight* of the user, *optional*
+             -    **height**, is the *height* of the user, *optional*
+   -    completion is a callback which returns a Bool value
+        - If *true*, registered successfully
+        - If *false*, registration failed
 
-    **Username is unique, per organization. It's not possible to have two same usernames in an organization.(At least for now)**
-
-    Use ```sdk.getUser()``` function to check if the user is being set or if the registration is required. If ```sdk.getUser()``` returns ```nil```, then we'll need to invoke ```registerUser()``` function.
-
+    **Username is unique, per organization. It's not possible to have two same usernames in an organization (at least for now)**
+    
     #### Usage/Example:
     ```Swift
         import SwiftUI
         import NextilesSDK
-        ...
-        var sdk = NextilesSDK()
-        sdk.registerUser(username: 'dummy_username', role_type: 'dummy_role_name', organization: 'dummy_organization')
+        
+        var sdk = NextilesSDK(organization:"Nextiles"){...}
+
+        @State var isRegistered = False
+        
+        sdk.registerNextilesUser(user:User(username: "jdBatman", name: "John Doe", organization: "Wayne Enterprises", age: 40, weight: 180, height: 302)){ result  in
+                    if result{
+                        // Registeration successfull
+                        isRegistered = True
+                    }else{
+                        // Registration failed
+                        isRegistered = False
+                    }
+        }
         ...
     ```
+    If registration is successfull, user is stored in the SDK memory and by using function ```sdk.getUser()```, User could be retrieved.
 
-    Now, that the user is registered, use
-    ``` sdk.getUser() ``` function to see if the user has being set. If the user hasn't been set in the ```getUser()``` then the NextilesSDK functionality (like connecting a device) can't be used.
+
+    Use ```sdk.getUser()``` function to check if the user is set or if the registration is required. If ```sdk.getUser()``` returns ```nil``` no user is stored yet and is recommended to register or login first.
+
 
     #### Usage/Example:
 
     ``` Swift
+
+    @State var isUserAvailable = False
+    
     VStack{
         if sdk.getUser(){
-            // continue your use-case
+            isUserAvailable = True
+            // take me to the Dashboard
         }else{
             // call registerView or invoke sdk.registerUser(...) function
+            isUserAvailable = False
             RegisterView()
         }
     }
     ```
+    NextilesSDK also provides delegate ```registeredSuccessfully(user:User)``` from ```userAuthCallback``` protocol and hence could be used like this:-
 
+    ``` Swift
+    extension DummyClass:userAuthCallback{
+        func registeredSuccessfully(user: User) {
+            print("User got registered:- ",user)
+        }    
+    }
+    ```
+    This delegate gets fired if the registration is successfull.
 
-2. **Scanning**:
+2. **Login**:
+
+    To login the user for NextilesSDK, use ```loginNextilesUser(username:String,organization:String,completion:(Bool)->())``` function.
+    
+    The following function takes 3 parameters:
+    - **username**, is the unique username which was used to register
+    - **organization**, is the organization which was used to register
+    - **completion callback**, which returns True or False, where:
+      - True, stands for successfull login
+      - False, stands for unsuccessfull login
+  
+    <br/>
+    #### Usage/Example:
+
+    ``` Swift
+
+    @State var isLoggedIn = False
+
+    func loginUser(){
+        sdk.loginNextilesUser(username: "jdBatman", organization: "Wayne Enterprises"){result in
+                if result{
+                    isLoggedIn = True
+                }else{
+                    isLoggedIn = False
+                }
+        }
+    }
+    ```
+    Similarly ```sdk.getUser()``` could be used here to check if the user is in the SDK session
+<br/><br/>
+    
+    NextilesSDK also provides delegate ```loginSuccessfully(user:User)``` from ```userAuthCallback``` protocol and hence could be used like this:-
+
+    ``` Swift
+    extension DummyClass:userAuthCallback{
+        func loginSuccessfully(user: User) {
+            print("User got registered:- ",user)
+        }    
+    }
+    ```
+    This delegate gets fired if the login is successfull.
+
+1. **Scanning**:
 
     Scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
     #### Usage/Example:
@@ -238,7 +313,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     Here, ```getPeripherals()``` returns the list of devices which are discoverable and as is visible in the above snippet, we can access device attributes as well.
 
-3. **Connecting**  
+2. **Connecting**  
     - To connect a device, use SDK's ``` connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String.
     - Check if the device is connected by using, ``` getConnectedDevicesListInDeviceForm ``` function. The following function returns a @Published list, which you can attach a listener to, so as soon as the device is connected it updates all its subscribers.
 
@@ -276,7 +351,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
    **Also, another thing to note here is, NextilesSDK instance is being stored in an EnvironmentObject, as it helps us initialize it once and avoid inconsistencies**
 
-4. **Subscribe/Reading Data**
+3. **Subscribe/Reading Data**
 
     Once the device is connected, the SDK can read the data and for that subscribe to the device's characteristics. Use ``` subscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. While the device is being subscribed, SDK reads the data emitted by the device and all of that data would be stored as soon as we stop (unsubscribe or disconnect) or if the TIME_INTERVAL exceeds.
 
@@ -309,7 +384,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     Now that we have subscribed to the device, the data reading is getting real. Nextiles Device is emitting data, the SDK is reading and storing it in application's local storage (Documents folder). If internet connection is on, it's also uploading data to the cloud, to maintain a copy of that data. To see the data in a live stream, follow next steps.
 
-5. **Live Data Stream**
+4. **Live Data Stream**
 
     This is where the Nextiles SDK becomes more powerful, where not only the data is being stored in CSV formats but also this SDK provides **Published Objects** handles to which one can easily attach a listener and see the data in real time. Realtime charts can be plotted on this live stream feed.
 
@@ -377,7 +452,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
         -   alt stands for  Altitude
 
 
-6. **Unsubscribe/ Generating CSVs**
+5. **Unsubscribe/ Generating CSVs**
 
     Unsubscribing is more like a pause event in a play-pause-stop cycle (when the user is tired or doesn't want to track the data). Use SDK's ``` unsubscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. Use this function to stop listening to the Nextiles Device.
 
@@ -392,7 +467,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
         - Nextiles Uploaded will ideally have all of your sessions data. CSVs in here are the files which are being already uploaded on cloud (which Nextiles SDK takes care of)
     
 
-7. **Disconnect Device**
+6. **Disconnect Device**
 
     Disconnecting the device is as easy as connecting. Use SDK's `disconnectDevice(device:Device)` function, which takes one argument of Device type Object.
 
