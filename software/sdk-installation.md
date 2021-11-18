@@ -151,7 +151,7 @@ so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KN
     }
 
     ```
-Here NextilesSDK(organization:"<YourOrgName>") is the initializer which verifies internally and also does most of the heavy lifting for us. <YourOrgName> is the organization name which Nextiles has registered your organization with. This could be found in the NX-Info.plist file to double-check the typos.
+Here NextilesSDK(organization:"`YourOrgName`") is the initializer which verifies internally and also does most of the heavy lifting for us. `YourOrgName` is the organization name which Nextiles has registered your organization with. This could be found in the NX-Info.plist file to double-check the typos.
 
 
 ## Use NextilesSDK and it's features
