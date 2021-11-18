@@ -126,7 +126,7 @@ so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KN
     Click on the **Project** file in the **Xcode navigator**, then click on the project's icon, then select the **Swift Packages** tab.
 ![Packages List](readme_images/packages_list.png)
 
-7. NX-Info.plist file, provided by Nextiles is needed to be able to use the SDK. If didn't receive the NX-Info.plist then reach out to one of our Team member. If the NX-Info.plist is available then make sure the project is able to build properly. <br> NX-Info.plist looks like this:
+7. NX-Info.plist file, provided by Nextiles is needed to be able to use the SDK. If didn't receive the NX-Info.plist then reach out to one of our Team members. If the NX-Info.plist is available then make sure the project is able to build properly. <br> NX-Info.plist looks like this:
 ![NX-Info.plist](readme_images/NX_INFO.plist_image.png)
 
 
@@ -137,13 +137,22 @@ so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KN
     import NextilesSDK
 
     struct ContentView:View{
-        var sdk = NextilesSDK()
+        var sdk = NextilesSDK(organization:"<YourOrganizationname>"){result in
+            // if result is not true then all good else trouble for us
+            if result{
+                print("SDK Verified")
+            }else{
+                print("Cannot use SDK and it will fail")
+            }
+        }
         var body:some View{
         MainViewComponent()
         }
     }
 
     ```
+Here NextilesSDK(organization:"`YourOrgName`") is the initializer which verifies internally and also does most of the heavy lifting for us. `YourOrgName` is the organization name which Nextiles has registered your organization with. This could be found in the NX-Info.plist file to double-check the typos.
+
 
 ## Use NextilesSDK and it's features
 Now that the SDK is available, it's time to see how exactly to use it.
