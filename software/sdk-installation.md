@@ -111,7 +111,7 @@ so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KN
 
 
 
-4. SDK repo rules window should appear asking for which version of SDK, Xcode should install. Choose the second rule, `branch`, as it will try to leverage the dev branch, then click Next.
+4. SDK repo rules window should appear asking for which version of SDK, Xcode should install. Choose the second rule, `branch`, as we will use the `beta` branch, then click Next.
 
     ![Choose Package Options](readme_images/choose_package_options.png)
 
