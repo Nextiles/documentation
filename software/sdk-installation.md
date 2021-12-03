@@ -78,11 +78,12 @@ In the SDK, there'll be a need to define what type of device user is trying to c
 NextilesDeviceType has:
 ```
     1. SLEEVE
-    2. KNEEBRACE
+    2. KNEE
     3. SOCK
     4. SURFACE
 ```
-so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.SURFACE```
+
+so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.SURFACE```
 
 ## Install Nextiles SDK via SPM (Swift package manager)
 
@@ -114,7 +115,7 @@ so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KN
 
 
 
-4. SDK repo rules window should appear asking for which version of SDK, Xcode should install. Choose the second rule, `branch`, as it will try to leverage the dev branch, then click Next.
+4. SDK repo rules window should appear asking for which version of SDK, Xcode should install. Choose the second rule, `branch`, as we will use the `beta` branch, then click Next.
 
     ![Choose Package Options](readme_images/choose_package_options.png)
 
@@ -463,7 +464,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
         }
     ```
     ### More Information on Metrics
-    All these metrics returns a [PassthroughSubject](https://developer.apple.com/documentation/combine/passthroughsubject) in a **[String]** format.
+    All these metrics returns a [PassthroughSubject](https://developer.apple.com/documentation/combine/passthroughsubject) in a **[String]** format. There metrics may change as per the product. But typically these are the global metrics which one should expect.
     -   NEXTILES_BATTERY
 
         shows the device's battery. Expect this value to be a list of count 1.
@@ -495,6 +496,11 @@ Usually, these would be the steps (in this order, but also depends on the implem
         returns the calculated angular at any given time. Expect this to be a list of count 1 and of format `[a0]`, where:
 
         -  a0 is angular rotation
+        
+        For our product, SOCK:
+        Expect this to be a list of count 3 and of format `[a0,a1,a2]`, where:
+        - a0, a1, a2 is the data coming from three sensors which are embedded in the sock
+        
 
     - NEXTILES_ENVIRONMENT
 
