@@ -18,7 +18,7 @@ The following document describes how to integrate the SDK into an application, h
     - [User attributes](#user-attributes)
     - [Usage/Example:](#usageexample)
     - [Usage/Example:](#usageexample-1)
-    - [Delegate:-](#delegate-)
+    - [Delegate](#delegate)
 - [Nextiles API Documentation](#nextiles-api-documentation)
 
 
@@ -263,9 +263,9 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
 3. **Login**:
 
-    To login the user for NextilesSDK, use ```loginNextilesUser(username:String,organization:String,completion:(Bool)->())``` function.
+    To login the user for NextilesSDK, use ```loginNextilesUser(user:User,completion:(Bool)->())``` function.
     
-    The following function takes 3 parameters:
+    The following function takes 2 arguments:
     - **user**, is the User object
     - **completion callback**, which returns True or False, where:
       - True, stands for successfull login
@@ -301,7 +301,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     This delegate gets fired if the login is successfull.
 
-4. **Scanning**:
+1. **Scanning**:
 
     Scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
     #### Usage/Example:
@@ -339,7 +339,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     Here, ```getPeripherals()``` returns the list of devices which are discoverable and as is visible in the above snippet, we can access device attributes as well.
 
-5. **Connecting**  
+2. **Connecting**  
     - To connect a device, use SDK's ```connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String.
       - where device, is the device object class which is easily available in `sdk.getPeripherals()`
       - where device_type, could be SLEEVE, KNEEBRACE, SURFACE or SOCK
@@ -377,15 +377,15 @@ Usually, these would be the steps (in this order, but also depends on the implem
    ```
    As shown in the above example, ```sdk.getConnectedDevicesListInDeviceForm()``` makes our life easier by providing a @Published list, so we don't have to worry about re-rendering the UI.
 
-   #### Delegate:-
+   #### Delegate
     DeviceFullyConnected is the delegate which could be used to check if the device is connected or not.
-
+    
     *Signature*:- `func deviceFullyConnected(devices:[Device])`
     -   where *devices* is the list of connected devices
 
     <br/>
     <br/>
-6. **Start/Stop Session**
+3. **Start/Stop Session**
 
     Once the device is connected, the SDK can help in starting the session. Use ``` startSession()``` function. While the device is in startSession mode, SDK reads the data emitted by the device and all of that data:
     - is stored as CSV by the SDK, as soon as we stop the session, disconnect or if the TIME_INTERVAL exceeds.
@@ -437,7 +437,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     
     <br/>
     <br/>
-7. **Live Data Stream**
+4. **Live Data Stream**
 
     This is where the Nextiles SDK becomes more powerful, where not only the data is being stored in CSV formats but also this SDK provides **Published Objects** handles to which one can easily attach a listener and see the data in real time. Realtime charts can be plotted on this live stream feed.
 
@@ -505,7 +505,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
         -   alt stands for  Altitude
     
 
-8. **Disconnect Device**
+5. **Disconnect Device**
 
     Disconnecting the device is as easy as connecting. Use SDK's `disconnectDevice(device:Device)` function, which takes one argument of Device type Object.
 
