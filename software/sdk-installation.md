@@ -15,7 +15,10 @@ The following document describes how to integrate the SDK into an application, h
   - [NextilesDeviceType](#nextilesdevicetype)
 - [Install Nextiles SDK via SPM (Swift package manager)](#install-nextiles-sdk-via-spm-swift-package-manager)
 - [Use NextilesSDK and it's features](#use-nextilessdk-and-its-features)
+    - [User attributes](#user-attributes)
     - [Usage/Example:](#usageexample)
+    - [Usage/Example:](#usageexample-1)
+    - [Delegate:-](#delegate-)
 - [Nextiles API Documentation](#nextiles-api-documentation)
 
 
@@ -77,9 +80,9 @@ NextilesDeviceType has:
     1. SLEEVE
     2. KNEEBRACE
     3. SOCK
-    4. MAT
+    4. SURFACE
 ```
-so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.MAT```
+so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEEBRACE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.SURFACE```
 
 ## Install Nextiles SDK via SPM (Swift package manager)
 
@@ -158,7 +161,36 @@ Here NextilesSDK(organization:"`YourOrgName`") is the initializer which verifies
 Now that the SDK is available, it's time to see how exactly to use it.
 Usually, these would be the steps (in this order, but also depends on the implementation):
 
-1. **One time Registration**:
+1. **User class**:
+   
+   SDK provides a User class interface by which a User can be defined and be passed along in the system.
+   User initializer looks like:
+   `User(username:String,organization:String)` 
+   
+   #### User attributes 
+   All of these attributes here are *optional and not mandatory*. Nextiles provides these attributes to various clients to power the data science.
+   - Date of birth, set the dob by calling `user.setDob(dob:String)`
+   - Gender, set the gender by calling `user.setGender(gender:String)`
+   - Weight, set the weight by calling `user.setWeight(weight:Int)`
+   - Height, set the height by calling `user.setHeight(height:Int)`
+   - Country, set the country by calling `user.setCountry(country:String)`
+   - Name, set the name by calling `user.setName(name:String)`
+   - Handed, set the the left or right side dominant for hand by calling `user.setHand(hand:String)`
+   - Footed, set the left or right side dominant foot by calling `user.setFoot(foot:String)`
+   - Sport and skillset, set the sport and skill set by calling `user.setSportAndSkillSet(sport:String,skillset:String)`
+   
+   #### Usage/Example:
+   ```Swift
+    import SwiftUI
+    import NextilesSDK
+
+    let user  = User(username:"dummyUsername",organization:"dummyUserOrganization")
+    // setting few properties for the User
+    user.setWeight(160)
+    user.setGender("Male")
+    user.setHeight(240)
+   ```
+2. **Registration**:
 
    To connect to a Nextiles Device, register the user with Nextiles first. This request tries to register the user within Nextiles servers and stores the User data in the user's application.
 
@@ -166,13 +198,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
    To do this, use SDK's `sdk.registerNextilesUser(user: User, completion: (Bool) -> ())` function, which takes 2 arguments:
    -    user, is an object of User class,
-        -    An User initializer looks like this: **User(username: String, name: String, organization: String, age: Int?, weight: Int?, height: Int?)**
-             -    **username**, is the *unique username* for the user in an organization
-             -    **name**, is your *full name*
-             -    **organization**, is the *organization* which the user belongs to
-             -    **age**, is the *age* of the user, *optional*
-             -    **weight**, is the *weight* of the user, *optional*
-             -    **height**, is the *height* of the user, *optional*
+
    -    completion is a callback which returns a Bool value
         - If *true*, registered successfully
         - If *false*, registration failed
@@ -188,7 +214,9 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
         @State var isRegistered = False
         
-        sdk.registerNextilesUser(user:User(username: "jdBatman", name: "John Doe", organization: "Wayne Enterprises", age: 40, weight: 180, height: 302)){ result  in
+        let user = User(username: "jdBatman", name: "John Doe", organization: "Wayne Enterprises")
+        user.setName(name:"Bruce Wayne")
+        sdk.registerNextilesUser(user:user){ result  in
                     if result{
                         // Registeration successfull
                         isRegistered = True
@@ -199,10 +227,10 @@ Usually, these would be the steps (in this order, but also depends on the implem
         }
         ...
     ```
-    If registration is successfull, user is stored in the SDK memory and by using function ```sdk.getUser()```, User could be retrieved.
+    If registration is successfull, user is stored in the SDK and by using function ```sdk.getUser()```, User could be retrieved.
 
 
-    Use ```sdk.getUser()``` function to check if the user is set or if the registration is required. If ```sdk.getUser()``` returns ```nil``` no user is stored yet and is recommended to register or login first.
+    At any point in time, use ```sdk.getUser()``` function to check if the user is set or if the registration is required. If ```sdk.getUser()``` returns ```nil``` no user is stored yet and is recommended to register or login first.
 
 
     #### Usage/Example:
@@ -233,13 +261,12 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     This delegate gets fired if the registration is successfull.
 
-2. **Login**:
+3. **Login**:
 
     To login the user for NextilesSDK, use ```loginNextilesUser(username:String,organization:String,completion:(Bool)->())``` function.
     
     The following function takes 3 parameters:
-    - **username**, is the unique username which was used to register
-    - **organization**, is the organization which was used to register
+    - **user**, is the User object
     - **completion callback**, which returns True or False, where:
       - True, stands for successfull login
       - False, stands for unsuccessfull login
@@ -248,11 +275,10 @@ Usually, these would be the steps (in this order, but also depends on the implem
     #### Usage/Example:
 
     ``` Swift
-
     @State var isLoggedIn = False
-
+    let user = User(username:"dummyUser",organization:"dummyOrganization")
     func loginUser(){
-        sdk.loginNextilesUser(username: "jdBatman", organization: "Wayne Enterprises"){result in
+        sdk.loginNextilesUser(user:user){result in
                 if result{
                     isLoggedIn = True
                 }else{
@@ -275,7 +301,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     This delegate gets fired if the login is successfull.
 
-1. **Scanning**:
+4. **Scanning**:
 
     Scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
     #### Usage/Example:
@@ -313,8 +339,10 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     Here, ```getPeripherals()``` returns the list of devices which are discoverable and as is visible in the above snippet, we can access device attributes as well.
 
-2. **Connecting**  
-    - To connect a device, use SDK's ``` connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String.
+5. **Connecting**  
+    - To connect a device, use SDK's ```connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String.
+      - where device, is the device object class which is easily available in `sdk.getPeripherals()`
+      - where device_type, could be SLEEVE, KNEEBRACE, SURFACE or SOCK
     - Check if the device is connected by using, ``` getConnectedDevicesListInDeviceForm ``` function. The following function returns a @Published list, which you can attach a listener to, so as soon as the device is connected it updates all its subscribers.
 
    #### Usage/Example:
@@ -349,42 +377,67 @@ Usually, these would be the steps (in this order, but also depends on the implem
    ```
    As shown in the above example, ```sdk.getConnectedDevicesListInDeviceForm()``` makes our life easier by providing a @Published list, so we don't have to worry about re-rendering the UI.
 
-   **Also, another thing to note here is, NextilesSDK instance is being stored in an EnvironmentObject, as it helps us initialize it once and avoid inconsistencies**
+   #### Delegate:-
+    DeviceFullyConnected is the delegate which could be used to check if the device is connected or not.
 
-3. **Subscribe/Reading Data**
+    *Signature*:- `func deviceFullyConnected(devices:[Device])`
+    -   where *devices* is the list of connected devices
 
-    Once the device is connected, the SDK can read the data and for that subscribe to the device's characteristics. Use ``` subscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. While the device is being subscribed, SDK reads the data emitted by the device and all of that data would be stored as soon as we stop (unsubscribe or disconnect) or if the TIME_INTERVAL exceeds.
+    <br/>
+    <br/>
+6. **Start/Stop Session**
+
+    Once the device is connected, the SDK can help in starting the session. Use ``` startSession()``` function. While the device is in startSession mode, SDK reads the data emitted by the device and all of that data:
+    - is stored as CSV by the SDK, as soon as we stop the session, disconnect or if the TIME_INTERVAL exceeds.
+    - Also, available via Passthrough listeners via `sdk.getDeviceListeneres` function
+
 
     #### Usage/Example:
     ```Swift
-    // in the above example, we can use this function like:
+    // we can use this function like:
 
     var body:some View{
         Button(action:{
-            sdk.subscribeCharacteristics(self.device!)
+            sdk.startSession()
         }){
-            Text("Subscribe")
+            Text("Start Session")
         }
     }
     ```
-    To check if the device is subscribed, use SDK's ``` getSubscribedDevices() ``` function, which returns a dictionary of [String:Bool], where key will be the device's UUID (in String format) and value is True or False. Similar to ``` getPeripherals() ```, this also publishes an event which we can listen to. If a device is subscribed or unsubscribed, it reflect the change.
+    
+    Use `stopSession()` to stop the session when don't want to read the data from the Nextiles device.
 
     #### Usage/Example:
-    ``` Swift
-    VStack{
-        Text("Hello")
-        }.onChange(of: sdk.getSubscribedDevices(), perform: { value in
-                            // where value is a dictionary of [String:Bool]
+    ```Swift
+    // we can use this function like:
 
-                            if value.contains(self.device.id.uuidString){
-                                print(" Device Subscribed ")
-                            }
-        })
+    var body:some View{
+        Button(action:{
+            sdk.stopSession()
+        }){
+            Text("Stop Session")
+        }
     }
     ```
-    Now that we have subscribed to the device, the data reading is getting real. Nextiles Device is emitting data, the SDK is reading and storing it in application's local storage (Documents folder). If internet connection is on, it's also uploading data to the cloud, to maintain a copy of that data. To see the data in a live stream, follow next steps.
 
-4. **Live Data Stream**
+    `stopSession` is more like a pause event in a play-pause-stop cycle (i.e., when the user is tired or doesn't want to track the data). Use SDK's ``` stopSession() ``` function. Use this function to stop listening to the Nextiles Device.
+
+    SDK takes care of generating the CSVs on behalf of us.
+
+    ### Local Storage Structure
+
+    1. NEXTILES-NotUploaded
+        - This is the local storage where if the file isn't uploaded on the cloud or when there is no internet connection. SDK will initially store this file here
+
+    2. NEXTILES-Uploaded
+        - Nextiles Uploaded will ideally have all of your sessions data. CSVs in here are the files which are being already uploaded on cloud (which Nextiles SDK takes care of)
+  
+    <br/>
+    Now that we have subscribed to the device, the data reading is getting real. Nextiles Device is emitting data, the SDK is reading and storing it in application's local storage (Documents folder). If internet connection is on, it's also uploading data to the cloud, to maintain a copy of that data. To see the data in a live stream, follow next steps.
+    
+    <br/>
+    <br/>
+7. **Live Data Stream**
 
     This is where the Nextiles SDK becomes more powerful, where not only the data is being stored in CSV formats but also this SDK provides **Published Objects** handles to which one can easily attach a listener and see the data in real time. Realtime charts can be plotted on this live stream feed.
 
@@ -450,24 +503,9 @@ Usually, these would be the steps (in this order, but also depends on the implem
         -   temp stands for Temperature
         -   hum stands for  Humidity
         -   alt stands for  Altitude
-
-
-5. **Unsubscribe/ Generating CSVs**
-
-    Unsubscribing is more like a pause event in a play-pause-stop cycle (when the user is tired or doesn't want to track the data). Use SDK's ``` unsubscribeCharacteristics(device:Device) ``` function, which takes Device object as an argument. Use this function to stop listening to the Nextiles Device.
-
-    SDK takes care of generating the CSVs on behalf of us.
-
-    ### Local Storage Structure
-
-    1. NEXTILES-NotUploaded
-        - This is the local storage where if the file isn't uploaded on the cloud or when there is no internet connection. SDK will initially store this file here
-
-    2. NEXTILES-Uploaded
-        - Nextiles Uploaded will ideally have all of your sessions data. CSVs in here are the files which are being already uploaded on cloud (which Nextiles SDK takes care of)
     
 
-6. **Disconnect Device**
+8. **Disconnect Device**
 
     Disconnecting the device is as easy as connecting. Use SDK's `disconnectDevice(device:Device)` function, which takes one argument of Device type Object.
 
