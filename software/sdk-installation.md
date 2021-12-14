@@ -11,19 +11,21 @@ The following document describes how to integrate the SDK into an application, h
 - [Table of Contents](#table-of-contents)
 - [Platform Support](#platform-support)
 - [Terminologies](#terminologies)
-- [Device struct and other definitions:](#device-struct-and-other-definitions)
+- [Device structure and other definitions:](#device-structure-and-other-definitions)
   - [NextilesDeviceType](#nextilesdevicetype)
+  - [NextilesDelegates](#nextilesdelegates)
 - [Install Nextiles SDK via SPM (Swift package manager)](#install-nextiles-sdk-via-spm-swift-package-manager)
 - [Use NextilesSDK and it's features](#use-nextilessdk-and-its-features)
     - [User attributes](#user-attributes)
     - [Usage/Example:](#usageexample)
     - [Usage/Example:](#usageexample-1)
     - [Delegate](#delegate)
+    - [getDataAnalytics() Function](#getdataanalytics-function)
 - [Nextiles API Documentation](#nextiles-api-documentation)
 
 
 ## Platform Support
--   ios 11.0 or higher
+-   ios 13.0 or higher
 -   Package uses Swift5.3
 
 ## Terminologies
@@ -57,7 +59,7 @@ The following document describes how to integrate the SDK into an application, h
 
     Read More about it, in `Step 5. Live Data Stream` in [**Use NextilesSDK and it's features**](###Use-NextilesSDK-and-it's-features)
 
-## Device struct and other definitions:
+## Device structure and other definitions:
 We provide a Nextiles Device struct for you to interact with a device.
 Nextiles SDK provide a struct: `Device` to interact with a NX (Nextiles) device. This struct gives access to a device's UUID, address, name, etc. For convinience, let's mention the definition of the structure here:
 
@@ -84,6 +86,46 @@ NextilesDeviceType has:
 ```
 
 so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KNEE```, ```NextilesDeviceType.SOCK```, ```NextilesDeviceType.SURFACE```
+
+### NextilesDelegates
+SDK provides delegates which are accessible via NextilesDelegates class.
+Some delegates and the protocols which are available in this class are:
+1. `bleDelegate:bleProtocols?`
+2. `authDelegate:userAuthCallback?`
+3. `uploadDelegate:uploadDataAWSProtocols?`
+4. `analyticsDelegate:analyticsProtocol?`
+
+    `bleProtocols` has functions:
+    - `func deviceFullyConnected(devices:[Device])`, gets triggered when the a device gets connected. This also returns a list of devices in return which makes it easier for multiple device connection
+    - `func sessionStarted(value:Bool)`, gets triggered when the session is started. 
+    - If its `true`, means session has started
+    - If its `false`, means session has stopped
+    - `func fileStoredLocally(value:Bool)` is triggered when the data is stored locally while being in a session. 
+    - `func deviceGotDisconnected(device:Device)` is triggered when the device is disconnected. It returns the `device`.
+
+    `analyticsProtocol`
+    - `func getAnalyticsData(data:[String:[String:Any]])`
+    - `func getSessionList(sessionList:[String])`
+    - `func gotError(error:Error)`
+    These are the functions which are used to get the data analytics from the NextilesAPI. Following functions help in providing metrics for a particular session.
+
+    `userAuthCallback`    
+    - `func registeredSuccessfully(user:User)` gets triggered when a registration process happens successfully.
+    - `func loginSuccessfully(user:User)` gets triggered when a login is successfull
+
+    `uploadDataAWSProtocols`
+    - `func uploadedDataToAWS(sessionTime:String)` gets triggered when an upload to the SDK backend happens
+
+    #### Usage of the delegates:-
+    To be able to listen to the delegates, we have to assign these delegates to self. So, in Swift5, this could be done as:-
+    ```Swift
+    init(){
+        NextilesDelegates.bleDelegate = self
+        NextilesDelegates.uploadDelegate = self
+    }
+    ...
+    ```
+    And then implement the stubs as requested by Xcode
 
 ## Install Nextiles SDK via SPM (Swift package manager)
 
@@ -510,8 +552,78 @@ Usually, these would be the steps (in this order, but also depends on the implem
         -   hum stands for  Humidity
         -   alt stands for  Altitude
     
+8. **Data Science Functions**
+   
+   NextilesSDK library provides few functions which could help in bringing data science to your application by calling some simple functions. These functions can bring metrics like `Force, Power, Work, Torque` for an entire session (i.e., the average Torque or Work done during a training session)
+   
+   #### getDataAnalytics() Function
+   Use `func getDataAnalytics(username:String,organization:String,metrics:[String],request_date:String,completion:@escaping ([String:[String:Any]]?)->())` function takes 5 arguments:-
+      - `username`, is the username of the user
+      - `organization`, is the organization which the user belongs to
+      - `metrics`, is the list of metrics being requested. This is an array of String, where these values can be:
+        - `NEXTILES_ALL`, stands for all the Nextiles' metrics which are explained below
+        - `NEXTILES_FORCE`, stands for Nextiles' force
+        - `NEXTILES_WORK`, stands for Nextiles' work
+        - `NEXTILES_POWER`, stands for Nextiles' power
+        - `NEXTILES_TORQUE`, stands for Nextiles' torque
+        - `NEXTILES_REPS`, stands for Nextiles' reps
+      - `request_date`, is the session timestamp for which the data is being requested
+      - `completion`, is the callback returns the response in the dictionary form. An example of the response looks like:
+        ```Swift
+        [
+            NEXTILES_FORCE:[
+                            NEXTILES_MIN:0
+                            NEXTILES_MEAN:32
+                            NEXTILES_MAX:100
+                            ],
+            NEXTILES_TORQUE:[
+                            NEXTILES_MIN:0,
+                            NEXTILES_MEAN:34,
+                            NEXTILES_MAX:100
+                            ],
+            DURATION: 342
+        ]
+        ```
+    Note:- 
+    - `NEXTILES_MIN, NEXTILES_MEAN, NEXTILES_MAX` are min, mean and max respectively having `Int` values.
+    - `DURATION` is the duration of the entire session and is in `seconds`
 
-5. **Disconnect Device**
+    #### Usage/Example:
+    ```Swift 5
+    sdk.getDataAnalytics(username: self.dummyUser, organization: self.dummyUserOrg, metrics: [NEXTILES_WORK,NEXTILES_POWER], request_date: result.last!){result in
+                        if let resp = result{
+                            if resp[NEXTILES_WORK] != nil && resp[NEXTILES_POWER] != nil{
+                                print(resp[NEXTILES_WORK],resp[NEXTILES_POWER])    
+                    }
+            }
+        } 
+    ```
+    In the above example, a call to `getDataAnalytics` with arguments returns the respective values which are being checked and printed on console. Also, `result.last` gives us the latest session timestamp which is passed as a `request_date`.
+
+    #### getSessions() Function
+    Use `func getRecentSessions(username:String,organization:String,completion: @escaping ([String])->())` function which returns an ordered list of all the sessions as session timestamps (in YYYY-mm-dd hh:mm:ss format). This function helps in retrieving all the sessions Nextiles has in the backend. This function could be very useful in getting a particular session timestamp and passing it to the `getDataAnalytics` function (as shown above).
+    
+    This function takes 2 arguments:
+    - username, takes the username for that user
+    - organization, is the organization which the user belongs to
+    
+    Response:-
+    ```Swift
+           ["2021-11-09 10:36:10", 
+            "2021-11-09 10:58:44", 
+            "2021-11-10 14:30:39", 
+            "2021-11-10 16:11:38", 
+            "2021-11-10 16:21:16", 
+            "2021-11-10 16:24:50", 
+            "2021-11-10 16:30:31", 
+            "2021-11-10 16:56:51", 
+            "2021-12-01 15:27:08", 
+            "2021-12-01 16:48:02", 
+            "2021-12-02 10:12:15"]
+    ```
+
+
+9.  **Disconnect Device**
 
     Disconnecting the device is as easy as connecting. Use SDK's `disconnectDevice(device:Device)` function, which takes one argument of Device type Object.
 
@@ -535,6 +647,14 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     And now after disconnecting, use `sdk.getConnectedDevicesListInDeviceForm` function to verify if the device is disconnected. It's the same method mentioned above to check if the device is no longer available in the list.
 
+    #### Delegate
+    DisconnectDevice is the delegate which could be used to check if the device got disconnected.
+    
+    *Signature*:- `func deviceGotDisconnected(device:Device)`
+    -   where *device* is the device we got disconnected
+
+    <br/>
+    <br/>
 
 
 ## Nextiles API Documentation
