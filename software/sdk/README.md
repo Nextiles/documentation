@@ -34,7 +34,7 @@ The following document describes how to integrate the SDK into an application, h
 
 3. Sign in to Github account window should appear, asking for **Account** and **Token**. Nextiles SDK Repository is private and hence there's a need of an access token, to leverage the SDK. Need not to worry cause Nextiles will provide that token.
 
-    Use the github account name for `account` and the access token for `token`. And click **Next**
+    Use the github account name **Nextiles** for `account` and the access token for `token`. And click **Next**
 
     ![Github Token](assets/github_token.png)
 
