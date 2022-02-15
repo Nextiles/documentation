@@ -8,19 +8,16 @@ The following document describes how to integrate the SDK into an application, h
 
 ## Table of Contents
 - [NextilesSDK](#nextilessdk)
-- [Table of Contents](#table-of-contents)
 - [Platform Support](#platform-support)
+- [Install Nextiles SDK via SPM (Swift package manager)](#install-nextiles-sdk-via-spm--swift-package-manager-)
 - [Terminologies](#terminologies)
-- [Device struct and other definitions:](#device-struct-and-other-definitions)
-  - [NextilesDeviceType](#nextilesdevicetype)
-- [Install Nextiles SDK via SPM (Swift package manager)](#install-nextiles-sdk-via-spm-swift-package-manager)
-- [Use NextilesSDK and it's features](#use-nextilessdk-and-its-features)
-    - [User attributes](#user-attributes)
-    - [Usage/Example:](#usageexample)
-    - [Usage/Example:](#usageexample-1)
-    - [Delegate](#delegate)
+  * [Device struct and other definitions:](#device-struct-and-other-definitions-)
+  * [Nextiles Device Types](#nextiles-device-types)
+- [Use NextilesSDK and it's features](#use-nextilessdk-and-it-s-features)
+    + [User attributes](#user-attributes)
+    + [Delegate](#delegate)
+    + [More Information on Metrics](#more-information-on-metrics)
 - [Nextiles API Documentation](#nextiles-api-documentation)
-
 
 ## Platform Support
 -   ios 11.0 or higher
@@ -173,7 +170,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
    - Footed, set the left or right side dominant foot by calling `user.setFoot(foot:String)`
    - Sport and skillset, set the sport and skill set by calling `user.setSportAndSkillSet(sport:String,skillset:String)`
 
-    #### Usage/Example:
+    **Example**
     ```Swift
     import SwiftUI
     import NextilesSDK
@@ -200,7 +197,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
     **Username is unique, per organization. It's not possible to have two same usernames in an organization (at least for now)**
 
-    #### Usage/Example:
+    **Example**
     ```Swift
     import SwiftUI
     import NextilesSDK
@@ -228,7 +225,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     At any point in time, use ```sdk.getUser()``` function to check if the user is set or if the registration is required. If ```sdk.getUser()``` returns ```nil``` no user is stored yet and is recommended to register or login first.
 
 
-    #### Usage/Example:
+    **Example**
 
     ``` Swift
 
@@ -267,9 +264,10 @@ Usually, these would be the steps (in this order, but also depends on the implem
       - False, stands for unsuccessfull login
 
     <br/>
-    #### Usage/Example:
+    
+    **Example**
 
-    ``` Swift
+    ```Swift
     @State var isLoggedIn = False
     let user = User(username:"dummyUser",organization:"dummyOrganization")
     func loginUser(){
@@ -282,6 +280,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
         }
     }
     ```
+
     Similarly ```sdk.getUser()``` could be used here to check if the user is in the SDK session
 <br/><br/>
 
@@ -299,7 +298,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
 1. **Scanning**:
 
     Scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
-    #### Usage/Example:
+    **Example**
     ``` Swift
         import SwiftUI
         import NextilesSDK
@@ -340,7 +339,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
       - where device_type, could be SLEEVE, KNEEBRACE, SURFACE or SOCK
     - Check if the device is connected by using, ``` getConnectedDevicesListInDeviceForm ``` function. The following function returns a @Published list, which you can attach a listener to, so as soon as the device is connected it updates all its subscribers.
 
-   #### Usage/Example:
+   **Example**
    ``` Swift
 
    import SwiftUI
@@ -387,7 +386,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     - Also, available via Passthrough listeners via `sdk.getDeviceListeneres` function
 
 
-    #### Usage/Example:
+    **Example**
     ```Swift
     // we can use this function like:
 
@@ -402,7 +401,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
     Use `stopSession()` to stop the session when don't want to read the data from the Nextiles device.
 
-    #### Usage/Example:
+    **Example**
     ```Swift
     // we can use this function like:
 
@@ -440,7 +439,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
         -  device_id: Device's UUID in String format
         -  feature: the metric you want to listen to, like "acceleration", "gyration", "angular", etc.
 
-    #### Usage/Example:
+    **Example**
     ``` Swift
         import Swift
         import NextilesSDK
@@ -509,7 +508,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
     Disconnecting the device is as easy as connecting. Use SDK's `disconnectDevice(device:Device)` function, which takes one argument of Device type Object.
 
-    #### Usage/Example:
+    **Example**
 
     ``` Swift
     import SwiftUI
