@@ -88,50 +88,50 @@ so it's usage is like: ```NextilesDeviceType.SLEEVE```, ```NextilesDeviceType.KN
 ## Install Nextiles SDK via SPM (Swift package manager)
 
 1. Swift Package Manager is distributed with Xcode. To start adding the Nextiles SDK to an iOS project, open the project in Xcode and select File > Swift Packages > Add Package Dependency. **Note**:- XCode is at 12.5, at the time of this document.
-![Add Package Dependency](readme_images/add_package_dependency.png)
+![Add Package Dependency](assets/add_package_dependency.png)
 
 2. Enter the Github repo URL (https://github.com/Nextiles/mobile-ios-sdk/) into the search bar and click Next.
 
-    ![Choose Package Repo](readme_images/choose_package_repo.png)
+    ![Choose Package Repo](assets/choose_package_repo.png)
 
 
 3. Sign in to Github account window should appear, asking for **Account** and **Token**. Nextiles SDK Repository is private and hence there's a need of an access token, to leverage the SDK. Need not to worry cause Nextiles will provide that token. 
 
     Use the github account name for `account` and the access token for `token`. And click **Next**
 
-    ![Github Token](readme_images/github_token.png)
+    ![Github Token](assets/github_token.png)
 
 
     Note:- If there's an error: "The remote repository could not be accessed" then it's possibly cause of the already attached Github account in XCode. And it's failing because current git configuration doesn't have the token in it.
 
-    ![Error](readme_images/Error.png)
+    ![Error](assets/Error.png)
 
     Go to the menu XCode > Preferences > Account, and there should be a github account/or a Git account visible.
-    ![Accounts Github](readme_images/accounts_github.png)
+    ![Accounts Github](assets/accounts_github.png)
 
     If that's the case, then a quick fix is to remove that account and try from the step 1 again and this time XCode will prompt for the **Account** and **Token**
     
-    ![Github Token](readme_images/github_token.png)
+    ![Github Token](assets/github_token.png)
 
 
 
 4. SDK repo rules window should appear asking for which version of SDK, Xcode should install. Choose the second rule, `branch`, as we will use the `beta` branch, then click Next.
 
-    ![Choose Package Options](readme_images/choose_package_options.png)
+    ![Choose Package Options](assets/choose_package_options.png)
 
 
 5. NextilesSDK should be automatically selected as it's the only package in this repo. Click **Finish**
 
-    ![Add Package](readme_images/add_package_to_TestingApp.png)
+    ![Add Package](assets/add_package_to_TestingApp.png)
 
 
 6. To list the SPM packages which are included in the project, navigate to the list by opening the Swift Packages tab for the project like: 
 
     Click on the **Project** file in the **Xcode navigator**, then click on the project's icon, then select the **Swift Packages** tab.
-![Packages List](readme_images/packages_list.png)
+![Packages List](assets/packages_list.png)
 
 7. NX-Info.plist file, provided by Nextiles is needed to be able to use the SDK. If didn't receive the NX-Info.plist then reach out to one of our Team members. If the NX-Info.plist is available then make sure the project is able to build properly. <br> NX-Info.plist looks like this:
-![NX-Info.plist](readme_images/NX_INFO.plist_image.png)
+![NX-Info.plist](assets/NX_INFO.plist_image.png)
 
 
 8. In your app code, explicitly import `NextilesSDK` and test the SDK like this:
