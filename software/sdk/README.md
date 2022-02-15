@@ -8,25 +8,86 @@ The following document describes how to integrate the SDK into an application, h
 
 ## Table of Contents
 - [NextilesSDK](#nextilessdk)
-- [Table of Contents](#table-of-contents)
 - [Platform Support](#platform-support)
+- [Install Nextiles SDK via SPM](#install-nextiles-sdk-via-spm)
 - [Terminologies](#terminologies)
-- [Device structure and other definitions:](#device-structure-and-other-definitions)
-  - [NextilesDeviceType](#nextilesdevicetype)
-  - [NextilesDelegates](#nextilesdelegates)
-- [Install Nextiles SDK via SPM (Swift package manager)](#install-nextiles-sdk-via-spm-swift-package-manager)
-- [Use NextilesSDK and it's features](#use-nextilessdk-and-its-features)
-    - [User attributes](#user-attributes)
-    - [Usage/Example:](#usageexample)
-    - [Usage/Example:](#usageexample-1)
-    - [Delegate](#delegate)
-    - [getDataAnalytics() Function](#getdataanalytics-function)
+  * [Device struct and other definitions:](#device-struct-and-other-definitions-)
+  * [Nextiles Device Types](#nextiles-device-types)
+- [Use NextilesSDK and it's features](#use-nextilessdk-and-it-s-features)
+    + [User attributes](#user-attributes)
+    + [Delegate](#delegate)
+    + [More Information on Metrics](#more-information-on-metrics)
 - [Nextiles API Documentation](#nextiles-api-documentation)
-
 
 ## Platform Support
 -   ios 13.0 or higher
 -   Package uses Swift5.3
+
+## Install Nextiles SDK via SPM
+
+1. Swift Package Manager is distributed with Xcode. To start adding the Nextiles SDK to an iOS project, open the project in Xcode and select File > Swift Packages > Add Package Dependency. **Note**:- XCode is at 12.5, at the time of this document.
+![Add Package Dependency](assets/add_package_dependency.png)
+
+2. Enter the Github repo URL (https://github.com/Nextiles/mobile-ios-sdk/) into the search bar and click Next.
+
+    ![Choose Package Repo](assets/choose_package_repo.png)
+
+3. Sign in to Github account window should appear, asking for **Account** and **Token**. Nextiles SDK Repository is private and hence there's a need of an access token, to leverage the SDK. Need not to worry cause Nextiles will provide that token.
+
+    Use the github account name **Nextiles** for `account` and the access token for `token`. And click **Next**
+
+    ![Github Token](assets/github_token.png)
+
+
+    Note:- If there's an error: "The remote repository could not be accessed" then it's possibly cause of the already attached Github account in XCode. And it's failing because current git configuration doesn't have the token in it.
+
+    ![Error](assets/Error.png)
+
+    Go to the menu XCode > Preferences > Account, and there should be a github account/or a Git account visible.
+    ![Accounts Github](assets/accounts_github.png)
+
+    If that's the case, then a quick fix is to remove that account and try from the step 1 again and this time XCode will prompt for the **Account** and **Token**
+
+    ![Github Token](assets/github_token.png)
+
+4. SDK repo rules window should appear asking for which version of SDK, Xcode should install. Choose the second rule, `branch`, as we will use the `beta` branch, then click Next.
+
+    ![Choose Package Options](assets/choose_package_options.png)
+
+5. NextilesSDK should be automatically selected as it's the only package in this repo. Click **Finish**
+
+    ![Add Package](assets/add_package_to_TestingApp.png)
+
+6. To list the SPM packages which are included in the project, navigate to the list by opening the Swift Packages tab for the project like:
+
+    Click on the **Project** file in the **Xcode navigator**, then click on the project's icon, then select the **Swift Packages** tab.
+![Packages List](assets/packages_list.png)
+
+7. NX-Info.plist file, provided by Nextiles is needed to be able to use the SDK. If didn't receive the NX-Info.plist then reach out to one of our Team members. If the NX-Info.plist is available then make sure the project is able to build properly. <br> NX-Info.plist looks like this:
+![NX-Info.plist](assets/NX_INFO.plist_image.png)
+
+8. In your app code, explicitly import `NextilesSDK` and test the SDK like this:
+
+    ``` Swift
+    import SwiftUI
+    import NextilesSDK
+
+    struct ContentView:View{
+        var sdk = NextilesSDK(organization:"<YourOrganizationname>"){result in
+            // if result is not true then all good else trouble for us
+            if result{
+                print("SDK Verified")
+            }else{
+                print("Cannot use SDK and it will fail")
+            }
+        }
+        var body:some View{
+        MainViewComponent()
+        }
+    }
+
+    ```
+Here NextilesSDK(organization:"`YourOrgName`") is the initializer which verifies internally and also does most of the heavy lifting for us. `YourOrgName` is the organization name which Nextiles has registered your organization with. This could be found in the NX-Info.plist file to double-check the typos.
 
 ## Terminologies
 
@@ -59,7 +120,7 @@ The following document describes how to integrate the SDK into an application, h
 
     Read More about it, in `Step 5. Live Data Stream` in [**Use NextilesSDK and it's features**](###Use-NextilesSDK-and-it's-features)
 
-## Device structure and other definitions:
+### Device struct and other definitions:
 We provide a Nextiles Device struct for you to interact with a device.
 Nextiles SDK provide a struct: `Device` to interact with a NX (Nextiles) device. This struct gives access to a device's UUID, address, name, etc. For convinience, let's mention the definition of the structure here:
 
@@ -72,10 +133,11 @@ Nextiles SDK provide a struct: `Device` to interact with a NX (Nextiles) device.
         public var connected: Bool = false
     }
 ```
+
 So, now if a device object is available, its features could be easily accessed.
 For ex: to get the device's name: ```deviceObject.name```, to get device's UUID: ```deviceObject.id```, in string format ```deviceObject.id.uuidString```.
 
-### NextilesDeviceType
+### Nextiles Device Types
 In the SDK, there'll be a need to define what type of device user is trying to connect and that's where `NextilesDeviceType` struct comes handy.
 NextilesDeviceType has:
 ```
@@ -127,90 +189,17 @@ Some delegates and the protocols which are available in this class are:
     ```
     And then implement the stubs as requested by Xcode
 
-## Install Nextiles SDK via SPM (Swift package manager)
-
-1. Swift Package Manager is distributed with Xcode. To start adding the Nextiles SDK to an iOS project, open the project in Xcode and select File > Swift Packages > Add Package Dependency. **Note**:- XCode is at 12.5, at the time of this document.
-![Add Package Dependency](readme_images/add_package_dependency.png)
-
-2. Enter the Github repo URL (https://github.com/Nextiles/mobile-ios-sdk/) into the search bar and click Next.
-
-    ![Choose Package Repo](readme_images/choose_package_repo.png)
-
-
-3. Sign in to Github account window should appear, asking for **Account** and **Token**. Nextiles SDK Repository is private and hence there's a need of an access token, to leverage the SDK. Need not to worry cause Nextiles will provide that token. 
-
-    Use the github account name for `account` and the access token for `token`. And click **Next**
-
-    ![Github Token](readme_images/github_token.png)
-
-
-    Note:- If there's an error: "The remote repository could not be accessed" then it's possibly cause of the already attached Github account in XCode. And it's failing because current git configuration doesn't have the token in it.
-
-    ![Error](readme_images/Error.png)
-
-    Go to the menu XCode > Preferences > Account, and there should be a github account/or a Git account visible.
-    ![Accounts Github](readme_images/accounts_github.png)
-
-    If that's the case, then a quick fix is to remove that account and try from the step 1 again and this time XCode will prompt for the **Account** and **Token**
-    
-    ![Github Token](readme_images/github_token.png)
-
-
-
-4. SDK repo rules window should appear asking for which version of SDK, Xcode should install. Choose the second rule, `branch`, as we will use the `beta` branch, then click Next.
-
-    ![Choose Package Options](readme_images/choose_package_options.png)
-
-
-5. NextilesSDK should be automatically selected as it's the only package in this repo. Click **Finish**
-
-    ![Add Package](readme_images/add_package_to_TestingApp.png)
-
-
-6. To list the SPM packages which are included in the project, navigate to the list by opening the Swift Packages tab for the project like: 
-
-    Click on the **Project** file in the **Xcode navigator**, then click on the project's icon, then select the **Swift Packages** tab.
-![Packages List](readme_images/packages_list.png)
-
-7. NX-Info.plist file, provided by Nextiles is needed to be able to use the SDK. If didn't receive the NX-Info.plist then reach out to one of our Team members. If the NX-Info.plist is available then make sure the project is able to build properly. <br> NX-Info.plist looks like this:
-![NX-Info.plist](readme_images/NX_INFO.plist_image.png)
-
-
-8. In your app code, explicitly import `NextilesSDK` and test the SDK like this:
-
-    ``` Swift
-    import SwiftUI
-    import NextilesSDK
-
-    struct ContentView:View{
-        var sdk = NextilesSDK(organization:"<YourOrganizationname>"){result in
-            // if result is not true then all good else trouble for us
-            if result{
-                print("SDK Verified")
-            }else{
-                print("Cannot use SDK and it will fail")
-            }
-        }
-        var body:some View{
-        MainViewComponent()
-        }
-    }
-
-    ```
-Here NextilesSDK(organization:"`YourOrgName`") is the initializer which verifies internally and also does most of the heavy lifting for us. `YourOrgName` is the organization name which Nextiles has registered your organization with. This could be found in the NX-Info.plist file to double-check the typos.
-
-
 ## Use NextilesSDK and it's features
 Now that the SDK is available, it's time to see how exactly to use it.
 Usually, these would be the steps (in this order, but also depends on the implementation):
 
 1. **User class**:
-   
+
    SDK provides a User class interface by which a User can be defined and be passed along in the system.
    User initializer looks like:
-   `User(username:String,organization:String)` 
-   
-   #### User attributes 
+   `User(username:String,organization:String)`
+
+   #### User attributes
    All of these attributes here are *optional and not mandatory*. Nextiles provides these attributes to various clients to power the data science.
    - Date of birth, set the dob by calling `user.setDob(dob:String)`
    - Gender, set the gender by calling `user.setGender(gender:String)`
@@ -221,9 +210,9 @@ Usually, these would be the steps (in this order, but also depends on the implem
    - Handed, set the the left or right side dominant for hand by calling `user.setHand(hand:String)`
    - Footed, set the left or right side dominant foot by calling `user.setFoot(foot:String)`
    - Sport and skillset, set the sport and skill set by calling `user.setSportAndSkillSet(sport:String,skillset:String)`
-   
-   #### Usage/Example:
-   ```Swift
+
+    **Example**
+    ```Swift
     import SwiftUI
     import NextilesSDK
 
@@ -232,7 +221,8 @@ Usually, these would be the steps (in this order, but also depends on the implem
     user.setWeight(160)
     user.setGender("Male")
     user.setHeight(240)
-   ```
+    ```
+
 2. **Registration**:
 
    To connect to a Nextiles Device, register the user with Nextiles first. This request tries to register the user within Nextiles servers and stores the User data in the user's application.
@@ -247,28 +237,28 @@ Usually, these would be the steps (in this order, but also depends on the implem
         - If *false*, registration failed
 
     **Username is unique, per organization. It's not possible to have two same usernames in an organization (at least for now)**
-    
-    #### Usage/Example:
-    ```Swift
-        import SwiftUI
-        import NextilesSDK
-        
-        var sdk = NextilesSDK(organization:"Nextiles"){...}
 
-        @State var isRegistered = False
-        
-        let user = User(username: "jdBatman", name: "John Doe", organization: "Wayne Enterprises")
-        user.setName(name:"Bruce Wayne")
-        sdk.registerNextilesUser(user:user){ result  in
-                    if result{
-                        // Registeration successfull
-                        isRegistered = True
-                    }else{
-                        // Registration failed
-                        isRegistered = False
-                    }
-        }
-        ...
+    **Example**
+    ```Swift
+    import SwiftUI
+    import NextilesSDK
+
+    var sdk = NextilesSDK(organization:"Nextiles"){...}
+
+    @State var isRegistered = False
+
+    let user = User(username: "jdBatman", name: "John Doe", organization: "Wayne Enterprises")
+    user.setName(name:"Bruce Wayne")
+    sdk.registerNextilesUser(user:user){ result  in
+                if result{
+                    // Registeration successfull
+                    isRegistered = True
+                }else{
+                    // Registration failed
+                    isRegistered = False
+                }
+    }
+    ...
     ```
     If registration is successfull, user is stored in the SDK and by using function ```sdk.getUser()```, User could be retrieved.
 
@@ -276,12 +266,12 @@ Usually, these would be the steps (in this order, but also depends on the implem
     At any point in time, use ```sdk.getUser()``` function to check if the user is set or if the registration is required. If ```sdk.getUser()``` returns ```nil``` no user is stored yet and is recommended to register or login first.
 
 
-    #### Usage/Example:
+    **Example**
 
     ``` Swift
 
     @State var isUserAvailable = False
-    
+
     VStack{
         if sdk.getUser(){
             isUserAvailable = True
@@ -307,17 +297,18 @@ Usually, these would be the steps (in this order, but also depends on the implem
 3. **Login**:
 
     To login the user for NextilesSDK, use ```loginNextilesUser(user:User,completion:(Bool)->())``` function.
-    
+
     The following function takes 2 arguments:
     - **user**, is the User object
     - **completion callback**, which returns True or False, where:
       - True, stands for successfull login
       - False, stands for unsuccessfull login
-  
-    <br/>
-    #### Usage/Example:
 
-    ``` Swift
+    <br/>
+    
+    **Example**
+
+    ```Swift
     @State var isLoggedIn = False
     let user = User(username:"dummyUser",organization:"dummyOrganization")
     func loginUser(){
@@ -330,9 +321,10 @@ Usually, these would be the steps (in this order, but also depends on the implem
         }
     }
     ```
+
     Similarly ```sdk.getUser()``` could be used here to check if the user is in the SDK session
 <br/><br/>
-    
+
     NextilesSDK also provides delegate ```loginSuccessfully(user:User)``` from ```userAuthCallback``` protocol and hence could be used like this:-
 
     ``` Swift
@@ -344,10 +336,10 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     This delegate gets fired if the login is successfull.
 
-1. **Scanning**:
+4. **Scanning**:
 
     Scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
-    #### Usage/Example:
+    **Example**
     ``` Swift
         import SwiftUI
         import NextilesSDK
@@ -382,13 +374,13 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     Here, ```getPeripherals()``` returns the list of devices which are discoverable and as is visible in the above snippet, we can access device attributes as well.
 
-2. **Connecting**  
+5. **Connecting**  
     - To connect a device, use SDK's ```connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String.
       - where device, is the device object class which is easily available in `sdk.getPeripherals()`
       - where device_type, could be SLEEVE, KNEEBRACE, SURFACE or SOCK
     - Check if the device is connected by using, ``` getConnectedDevicesListInDeviceForm ``` function. The following function returns a @Published list, which you can attach a listener to, so as soon as the device is connected it updates all its subscribers.
 
-   #### Usage/Example:
+   **Example**
    ``` Swift
 
    import SwiftUI
@@ -422,20 +414,18 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
    #### Delegate
     DeviceFullyConnected is the delegate which could be used to check if the device is connected or not.
-    
-    *Signature*:- `func deviceFullyConnected(devices:[Device])`
-    -   where *devices* is the list of connected devices
 
-    <br/>
-    <br/>
-3. **Start/Stop Session**
+    *Signature*:- `func deviceFullyConnected(devices:[Device])` where *devices* is the list of connected devices
+
+
+6. **Start/Stop Session**
 
     Once the device is connected, the SDK can help in starting the session. Use ``` startSession()``` function. While the device is in startSession mode, SDK reads the data emitted by the device and all of that data:
     - is stored as CSV by the SDK, as soon as we stop the session, disconnect or if the TIME_INTERVAL exceeds.
     - Also, available via Passthrough listeners via `sdk.getDeviceListeneres` function
 
 
-    #### Usage/Example:
+    **Example**
     ```Swift
     // we can use this function like:
 
@@ -447,10 +437,10 @@ Usually, these would be the steps (in this order, but also depends on the implem
         }
     }
     ```
-    
+
     Use `stopSession()` to stop the session when don't want to read the data from the Nextiles device.
 
-    #### Usage/Example:
+    **Example**
     ```Swift
     // we can use this function like:
 
@@ -474,13 +464,11 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
     2. NEXTILES-Uploaded
         - Nextiles Uploaded will ideally have all of your sessions data. CSVs in here are the files which are being already uploaded on cloud (which Nextiles SDK takes care of)
-  
+
     <br/>
     Now that we have subscribed to the device, the data reading is getting real. Nextiles Device is emitting data, the SDK is reading and storing it in application's local storage (Documents folder). If internet connection is on, it's also uploading data to the cloud, to maintain a copy of that data. To see the data in a live stream, follow next steps.
-    
-    <br/>
-    <br/>
-4. **Live Data Stream**
+
+7. **Live Data Stream**
 
     This is where the Nextiles SDK becomes more powerful, where not only the data is being stored in CSV formats but also this SDK provides **Published Objects** handles to which one can easily attach a listener and see the data in real time. Realtime charts can be plotted on this live stream feed.
 
@@ -488,7 +476,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
         -  device_id: Device's UUID in String format
         -  feature: the metric you want to listen to, like "acceleration", "gyration", "angular", etc.
 
-    #### Usage/Example:
+    **Example**
     ``` Swift
         import Swift
         import NextilesSDK
@@ -538,11 +526,11 @@ Usually, these would be the steps (in this order, but also depends on the implem
         returns the calculated angular at any given time. Expect this to be a list of count 1 and of format `[a0]`, where:
 
         -  a0 is angular rotation
-        
+
         For our product, SOCK:
         Expect this to be a list of count 3 and of format `[a0,a1,a2]`, where:
         - a0, a1, a2 is the data coming from three sensors which are embedded in the sock
-        
+
 
     - NEXTILES_ENVIRONMENT
 
@@ -551,7 +539,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
         -   temp stands for Temperature
         -   hum stands for  Humidity
         -   alt stands for  Altitude
-    
+
 8. **Data Science Functions**
    
    NextilesSDK library provides few functions which could help in bringing data science to your application by calling some simple functions. These functions can bring metrics like `Force, Power, Work, Torque` for an entire session (i.e., the average Torque or Work done during a training session)
@@ -627,7 +615,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
 
     Disconnecting the device is as easy as connecting. Use SDK's `disconnectDevice(device:Device)` function, which takes one argument of Device type Object.
 
-    #### Usage/Example:
+    **Example**
 
     ``` Swift
     import SwiftUI
@@ -653,9 +641,5 @@ Usually, these would be the steps (in this order, but also depends on the implem
     *Signature*:- `func deviceGotDisconnected(device:Device)`
     -   where *device* is the device we got disconnected
 
-    <br/>
-    <br/>
-
-
 ## Nextiles API Documentation
-Nextiles API gives you a way to fetch data stored in cloud. [Read More](https://github.com/Nextiles/documentation/blob/master/software/api-documentation.md)
+Nextiles API gives you a way to fetch data stored in cloud. [Read More](https://github.com/Nextiles/documentation/tree/master/software/api/README.md)
