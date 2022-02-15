@@ -9,7 +9,7 @@ The following document describes how to integrate the SDK into an application, h
 ## Table of Contents
 - [NextilesSDK](#nextilessdk)
 - [Platform Support](#platform-support)
-- [Install Nextiles SDK via SPM (Swift package manager)](#install-nextiles-sdk-via-spm--swift-package-manager-)
+- [Install Nextiles SDK via SPM](#install-nextiles-sdk-via-spm)
 - [Terminologies](#terminologies)
   * [Device struct and other definitions:](#device-struct-and-other-definitions-)
   * [Nextiles Device Types](#nextiles-device-types)
@@ -23,7 +23,7 @@ The following document describes how to integrate the SDK into an application, h
 -   ios 13.0 or higher
 -   Package uses Swift5.3
 
-## Install Nextiles SDK via SPM (Swift package manager)
+## Install Nextiles SDK via SPM
 
 1. Swift Package Manager is distributed with Xcode. To start adding the Nextiles SDK to an iOS project, open the project in Xcode and select File > Swift Packages > Add Package Dependency. **Note**:- XCode is at 12.5, at the time of this document.
 ![Add Package Dependency](assets/add_package_dependency.png)
@@ -336,7 +336,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     This delegate gets fired if the login is successfull.
 
-1. **Scanning**:
+4. **Scanning**:
 
     Scan the nearby/discoverable Nextiles devices, by using ```startScan() ``` function.
     **Example**
@@ -374,7 +374,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     ```
     Here, ```getPeripherals()``` returns the list of devices which are discoverable and as is visible in the above snippet, we can access device attributes as well.
 
-2. **Connecting**  
+5. **Connecting**  
     - To connect a device, use SDK's ```connectDevice(device:Device,device_type:String) ``` function, which takes two parameters: device and device_type, where device is of Device struct, and device_type is a String.
       - where device, is the device object class which is easily available in `sdk.getPeripherals()`
       - where device_type, could be SLEEVE, KNEEBRACE, SURFACE or SOCK
@@ -415,12 +415,10 @@ Usually, these would be the steps (in this order, but also depends on the implem
    #### Delegate
     DeviceFullyConnected is the delegate which could be used to check if the device is connected or not.
 
-    *Signature*:- `func deviceFullyConnected(devices:[Device])`
-    -   where *devices* is the list of connected devices
+    *Signature*:- `func deviceFullyConnected(devices:[Device])` where *devices* is the list of connected devices
 
-    <br/>
-    <br/>
-3. **Start/Stop Session**
+
+6. **Start/Stop Session**
 
     Once the device is connected, the SDK can help in starting the session. Use ``` startSession()``` function. While the device is in startSession mode, SDK reads the data emitted by the device and all of that data:
     - is stored as CSV by the SDK, as soon as we stop the session, disconnect or if the TIME_INTERVAL exceeds.
@@ -470,9 +468,7 @@ Usually, these would be the steps (in this order, but also depends on the implem
     <br/>
     Now that we have subscribed to the device, the data reading is getting real. Nextiles Device is emitting data, the SDK is reading and storing it in application's local storage (Documents folder). If internet connection is on, it's also uploading data to the cloud, to maintain a copy of that data. To see the data in a live stream, follow next steps.
 
-    <br/>
-    <br/>
-4. **Live Data Stream**
+7. **Live Data Stream**
 
     This is where the Nextiles SDK becomes more powerful, where not only the data is being stored in CSV formats but also this SDK provides **Published Objects** handles to which one can easily attach a listener and see the data in real time. Realtime charts can be plotted on this live stream feed.
 
@@ -644,10 +640,6 @@ Usually, these would be the steps (in this order, but also depends on the implem
     
     *Signature*:- `func deviceGotDisconnected(device:Device)`
     -   where *device* is the device we got disconnected
-
-    <br/>
-    <br/>
-
 
 ## Nextiles API Documentation
 Nextiles API gives you a way to fetch data stored in cloud. [Read More](https://github.com/Nextiles/documentation/tree/master/software/api/README.md)
