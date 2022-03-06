@@ -5,7 +5,6 @@ This documentation contains information on the Bluetooth and CSV data structure,
 ## Table of Contents
 
 - [Nextiles Data Documentation](#nextiles-data-documentation)
-  * [Table of Contents](#table-of-contents)
   * [Data Structure](#data-structure)
     + [CSV](#csv)
     + [Metadata](#metadata)
@@ -35,31 +34,55 @@ Data is stored by organization, username, and date / time of session. Date is wr
     - **username**/
          - **start_date**/
             - **start_time**/
-                - **files_in_the _session**/
+                - **csv_files_in_the _session**/
 
-![](assets/file-list-2.png)                
+![](assets/file-list.png)                
 
 ### CSV
-Columsn are organized as follows
+
+CSV files follow a flat data structure in which every value comes with information on it's measurement, field, and type
 
 | time | measurement | value | field | type | device |
 |------|-------------|-------|-------|------|--------|
+| YYYY-MM-DD HH:MM:SS:mmmm | [IMU, sensor, device, battery] | number | [ax, ay, az, gx, gy, gz, mx, my, mz, a[0-n], temp, humd, baro, b] | [acceleration, gyration, magnet, adc, temperature, humidity, barometer, battery] | device name |
 
-**time** = YYYY-MM-DD HH-MM-SS:mmmm
+Data heiarchy follows
 
-**measurement**
-- IMU
-- sensor
-- device
-- battery
+| measurement | type         | field    | units              |
+|-------------|--------------|----------|--------------------|
+| IMU         | acceleration | a[x,y,z] | [m/s2]             |
+| IMU         | gyration     | g[x,y,z] | [deg/s]            |
+| IMU         | magnet       | m[x,y,z] | [tesla]            |
+| sensor      | adc          | a[0-n]   | [N (uncalibrated)] |
+| device      | temperature  | temp     | [Celcius]          |
+| device      | humidity     | humd     | [%]                |
+| device      | barometer    | baro     | [atm]              |
+| battery     | battery      | bat      | [%]                |
 
-**value**
+<!-- - **IMU** > **acceleration** > **a[x, y, z]** - [m/s2] 
+- **IMU** > **gyration** > **g[x, y, z]** - [deg/s]
+- **IMU** > **magnet** > **m[x, y, z]** - [tesla]
+- **sensor** > **adc** > **a[0-n]** - [N (uncalibrated)]
+- **device** > **temperature** > **temp** - [Celsius]
+- **device** > **humidity** > **humd** - [%]
+- **device** > **barometer** > **baro** - [atm] -->
 
-**field**
+Example
 
-**type**
-
-**device** name of device
+| time                     | measurement | value | field | type         | device         |
+|--------------------------|-------------|-------|-------|--------------|----------------|
+| 2022-03-02 10:22:35:7600 | IMU         | 13    | ax    | acceleration | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | IMU         | 0     | ay    | acceleration | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | IMU         | 102   | az    | acceleration | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | IMU         | 115   | gx    | gyration     | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | IMU         | -103  | gy    | gyration     | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | IMU         | -57   | gz    | gyration     | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | IMU         | 210   | mx    | magnet       | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | IMU         | 329   | my    | magnet       | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | IMU         | 3748  | mz    | magnet       | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | sensor      | 19    | a0    | adc          | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | sensor      | 29    | a1    | adc          | NX6db9e94987d8 |
+| 2022-03-02 10:22:35:7600 | sensor      | 17    | a2    | adc          | NX6db9e94987d8 |
 
 ### Metadata
 Session metadata contains information about the user, session time, and device.
@@ -91,13 +114,39 @@ The device field is an array of device information containing the device name, p
 <!-- --------------------------------------- -->
 ## Product Types
 
-All products contain IMU, sensor, device, and battery measurements. Differentiation is the frequency at which they emit data, and the number of sensor data points 
+All products contain IMU, sensor, device, and battery measurements. Each device emits packets of data at different frequencies. Each device may also contain different number of force sensors (1-n), as well as scalars that per device firmware.
 
 ### Arm & Knee Sleeve
+Number of force sensors = 1
+
+Scalars
+| firmware_version | acceleration | gyration | magnet | adc | temperature | humidity | barometer |
+|------------------|--------------|----------|--------|-----|-------------|----------|-----------|
+| 0.0.1            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
+| 1.0.0            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
+| 2.0.0            | 100          | 100      | 10     | 1   | 10          | 10       | 100       |
 
 ### Sock
+Number of force sensors = 3
+
+Scalars
+| firmware_version | acceleration | gyration | magnet | adc | temperature | humidity | barometer |
+|------------------|--------------|----------|--------|-----|-------------|----------|-----------|
+| 0.0.1            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
+| 1.0.0            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
+| 2.0.0            | 100          | 100      | 10     | 1   | 10          | 10       | 100       |
 
 ### Surface
+Number of force sensors = 1, 2, or 4
+
+Scalars
+IMU and device measurements are updated every 100 msec, as they are not relevant for this product.
+
+| firmware_version | adc |
+|------------------|-----|
+| 0.1.1            | 1   |
+| 0.1.2            | 1   |
+| 0.2.2            | 1   |
 
 <!-- --------------------------------------- -->
 <!-- PYTHON SCRIPTS -->
