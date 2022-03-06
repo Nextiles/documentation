@@ -117,9 +117,13 @@ The device field is an array of device information containing the device name, p
 All products contain IMU, sensor, device, and battery measurements. Each device emits packets of data at different frequencies. Each device may also contain different number of force sensors (1-n), as well as scalars that per device firmware.
 
 ### Arm & Knee Sleeve
-Number of force sensors = 1
 
-Scalars
+**Sensors**
+| Number of sensors | field |
+|-------------------|-------|
+| 1                 | a0    |
+
+**Scalars**
 | firmware_version | acceleration | gyration | magnet | adc | temperature | humidity | barometer |
 |------------------|--------------|----------|--------|-----|-------------|----------|-----------|
 | 0.0.1            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
@@ -127,9 +131,13 @@ Scalars
 | 2.0.0            | 100          | 100      | 10     | 1   | 10          | 10       | 100       |
 
 ### Sock
-Number of force sensors = 3
 
-Scalars
+**Sensors**
+| Number of sensors | field      |
+|-------------------|------------|
+| 1                 | a0, a1, a2 |
+
+**Scalars**
 | firmware_version | acceleration | gyration | magnet | adc | temperature | humidity | barometer |
 |------------------|--------------|----------|--------|-----|-------------|----------|-----------|
 | 0.0.1            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
@@ -137,9 +145,14 @@ Scalars
 | 2.0.0            | 100          | 100      | 10     | 1   | 10          | 10       | 100       |
 
 ### Surface
-Number of force sensors = 1, 2, or 4
 
-Scalars
+**Sensors**
+| Number of sensors | field          |
+|-------------------|----------------|
+| 3                 | a0, a1, a2, a3 |
+
+**Scalars**
+
 IMU and device measurements are updated every 100 msec, as they are not relevant for this product.
 
 | firmware_version | adc |
@@ -193,7 +206,7 @@ Listing files
 python3  download_s3_raw.py -u <username> -o <organization> -t <token> ls
 ```
 
-Note that a start and end time can be added to narrow the printed list of files on the terminal
+Note that a `start_time` and `end_time` can be added to narrow the printed list of files on the terminal
 
 #### Example 1 - `start_date`
 
