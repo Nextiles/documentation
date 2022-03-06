@@ -46,7 +46,7 @@ CSV files follow a flat data structure in which every value comes with informati
 |------|-------------|-------|-------|------|--------|
 | YYYY-MM-DD HH:MM:SS:mmmm | [IMU, sensor, device, battery] | number | [ax, ay, az, gx, gy, gz, mx, my, mz, a[0-n], temp, humd, baro, b] | [acceleration, gyration, magnet, adc, temperature, humidity, barometer, battery] | device name |
 
-Data heiarchy follows
+Data heiarchy
 
 | measurement | type         | field    | units              |
 |-------------|--------------|----------|--------------------|
@@ -58,14 +58,6 @@ Data heiarchy follows
 | device      | humidity     | humd     | [%]                |
 | device      | barometer    | baro     | [atm]              |
 | battery     | battery      | bat      | [%]                |
-
-<!-- - **IMU** > **acceleration** > **a[x, y, z]** - [m/s2] 
-- **IMU** > **gyration** > **g[x, y, z]** - [deg/s]
-- **IMU** > **magnet** > **m[x, y, z]** - [tesla]
-- **sensor** > **adc** > **a[0-n]** - [N (uncalibrated)]
-- **device** > **temperature** > **temp** - [Celsius]
-- **device** > **humidity** > **humd** - [%]
-- **device** > **barometer** > **baro** - [atm] -->
 
 Example
 
@@ -133,9 +125,9 @@ All products contain IMU, sensor, device, and battery measurements. Each device 
 ### Sock
 
 **Sensors**
-| Number of sensors | field      |
-|-------------------|------------|
-| 1                 | a0, a1, a2 |
+| Number of sensors | field        |
+|-------------------|--------------|
+| 1                 | [a0, a1, a2] |
 
 **Scalars**
 | firmware_version | acceleration | gyration | magnet | adc | temperature | humidity | barometer |
@@ -147,9 +139,9 @@ All products contain IMU, sensor, device, and battery measurements. Each device 
 ### Surface
 
 **Sensors**
-| Number of sensors | field          |
-|-------------------|----------------|
-| 3                 | a0, a1, a2, a3 |
+| Number of sensors | field            |
+|-------------------|------------------|
+| 3                 | [a0, a1, a2, a3] |
 
 **Scalars**
 
@@ -313,6 +305,13 @@ The data will be structured as follows:
 
 ![](assets/file-structure.png)    -->
 
+<!-- - **IMU** > **acceleration** > **a[x, y, z]** - [m/s2] 
+- **IMU** > **gyration** > **g[x, y, z]** - [deg/s]
+- **IMU** > **magnet** > **m[x, y, z]** - [tesla]
+- **sensor** > **adc** > **a[0-n]** - [N (uncalibrated)]
+- **device** > **temperature** > **temp** - [Celsius]
+- **device** > **humidity** > **humd** - [%]
+- **device** > **barometer** > **baro** - [atm] -->
 
 
 
