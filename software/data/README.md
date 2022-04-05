@@ -2,10 +2,8 @@
 
 This documentation contains information on the Bluetooth and CSV data structure, as well as ways to pull down data using provided python scripts
 
-## Table of Contents
-
 - [Nextiles Data Documentation](#nextiles-data-documentation)
-  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
   - [Data Structure](#data-structure)
     - [CSV](#csv)
     - [Metadata](#metadata)
@@ -29,6 +27,14 @@ This documentation contains information on the Bluetooth and CSV data structure,
 <!-- --------------------------------------- -->
 <!-- PYTHON SCRIPTS -->
 <!-- --------------------------------------- -->
+
+## Requirements
+All packages are built-in for python 3 and above. Please upgrade if needed.
+To run the python script you would need the following packages:
+- python 3+ - [download](https://www.python.org/downloads/)
+- `requests` package - [documentation](https://pypi.org/project/requests/)
+- `datetime` package - [documentation](https://docs.python.org/3/library/datetime.html)
+  
 ## Data Structure
 
 Data is stored by organization, username, and date / time of session. Date is written as `YYYY-MM-DD` and time as `HH:MM:SS` with the CSV files stored as `HH:MM:SS.csv` with incrementing time per duration of the session. Folder structure will appear as follows:
@@ -84,7 +90,7 @@ Session metadata contains information about the user, session time, and device.
 
 ```javascript
 {
-  "organization" : "NBA",
+  "organization" : "org",
   "data" : "1.0.0",
   "platform_version" : "iOS 15.3.1",
   "platform" : "iOS",
@@ -97,7 +103,7 @@ Session metadata contains information about the user, session time, and device.
     }
   ],
   "date" : "2022-03-02",
-  "username" : "tryan",
+  "username" : "user",
   "time" : "10:22:35"
 }
 ```
@@ -182,9 +188,9 @@ Special arguments:
 
 **Time format**
 
-The date formats will be YYYY-MM-DD (year-month-day). 
+The date formats will be `YYYY-MM-DD` (year-month-day). 
 
-The time formats will be HH-MM-SS (hours-minutes-seconds). Hours are in military time (e.g. 2 PM is 14)
+The time formats will be `HH-MM-SS` (hours-minutes-seconds). Hours are in military time (e.g. 2 PM is 14)
 
 **Tokens**
 
