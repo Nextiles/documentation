@@ -4,6 +4,7 @@ Thank you for choosing to use the Nextiles SDK. Using this SDK will allow you to
 ## Table of Contents
 * [Installation Process](#installation-process)
     * [Installation Steps](#installation-steps)
+    * [Troubleshooting](#troubleshooting)
 * [Info Plist](#info-plist)
 * [Getting started with the SDK](#getting-started-with-the-sdk)
 * [User](#user)
@@ -47,6 +48,25 @@ The NextilesSDK is distributed using [Swift Package Manager](https://www.swift.o
  ![](assets/dialogue-spm.png)
 6. Lastly another popup will appear asking you to confirm access to our private repository. Simply enter your Github handle and the token that will be provided to you. 
 ![](assets/github-token.png)
+
+### Troubleshooting
+Sometimes you may run into `the remote repository could not be accessed`
+
+![](assets/0-error.png)
+
+To resolve this issue you need to add Nextiles credentials to your accounts in your Xcode's system preference.
+1. Go to your Xcode's system preferences.
+2. Click the plus icon in the bottom left.
+3. Choose `GitHub` as your account type.
+![](assets/1-edit.png)
+
+Finally:
+- In the `Sign in to your Github Account` popup enter the account `accounts@nextiles.tech`
+- Enter the token provided to you.
+- Click sign in.
+- Installation should proceed with no issues. 
+![](assets/2-add.png)
+
 ## Info Plist
 
 An NX-Info.plist file, provided by Nextiles is needed to be able to use the SDK. Without this file, the SDK will not work. Simply drag and drop the NX-Info file into your application's file hierarchy to finish the installation and setup process of the SDK.
