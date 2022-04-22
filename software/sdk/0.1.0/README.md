@@ -2,7 +2,6 @@
 Thank you for choosing to use the Nextiles SDK. Using this SDK will allow you to communicate with our devices. You will be able to connect/disconnect and have live data streamed, to your iOS devices. The SDK will grant access to our analytics which takes raw data and provides insight into user sessions. 
 
 ## Table of Contents
-
 * [Installation Process](#installation-process)
     * [Installation Steps](#installation-steps)
 * [Info Plist](#info-plist)
@@ -14,32 +13,29 @@ Thank you for choosing to use the Nextiles SDK. Using this SDK will allow you to
     * [Get current user](#get-current-user)
     * [Edit a user](#edit-a-user)
 * [Bluetooth Connectivity](#bluetooth-connectivity)
-    * [Initiate scanning / stop scanning](#initiate-scanningstop-scanning)
-    * [Getting Discovered Nextile Devices](#getting-discovered-nextile-devices)
-    * [Connecting to a Nextile's Device](#connecting-to-a-nextile-s-device)
-    * [Disconnecting to a Nextile's Device](#disconnecting-to-a-nextile-s-device)
+    * [Initiate scanning / stop scanning](#start-and-stop-scanning)
+    * [Getting discovered Nextiles devices](#getting-discovered-nextile-devices)
+    * [Connecting to a Nextiles device](#connecting-to-a-nextiles-device)
+    * [Disconnecting from a Nextiles device](#disconnecting-from-a-nextiles-device)
 * [Sessions](#sessions)
-    * [Starting a Session](#starting-a-session)
-    * [Stopping a Session](#stopping-a-session)
+    * [Starting a session](#starting-a-session)
+    * [Stopping a session](#stopping-a-session)
 * [Getting Raw Data](#getting-raw-data)
-    * [Getting access to a device's PTS](#getting-access-to-a-device-s-pts)
+    * [Getting access to a device's PassthroughSubject](#getting-access-to-pts-for-a-specific-device)
     * [Raw data getters](#raw-data-getters)
 * [Getting Analytics](#getting-analytics)
 * [Classes and Structs](#classes-and-structs)
     * [Device class](#device-class)
-    * [Methods Specific for the device class](#methods-specific-for-the-device-class)
-    * [GetDevice](#getdevice)
-    * [Setting custom name for devices](#setting-custom-name-for-devices)
-    * [Saving devices to local storage](#saving-devices-to-local-storage)
     * [Session class](#session-class)
     * [Summary class](#summary-class)
     * [Peaks class](#peaks-class)
     * [User class](#user-class)
+    * [Measurement class](#measurement-class)
 * [Delegates and Protocols](#delegates-and-protocols)
 
 ## Installation Process
 
-The NextilesSDK is distributed using Swift Package Manager (link to SPM).
+The NextilesSDK is distributed using [Swift Package Manager](https://www.swift.org/package-manager/).
 
 ### Installation Steps
 1. In your Xcode project click File -> Add Packages
@@ -104,7 +100,7 @@ sdk.registerUser(user: newUser) { success in
 ```
 
 **ARGUMENTS**
-- `user` (this can be a link to the user class)
+- [user](#user-class)
 
 **RETURN**
 - `Bool` - true or false depending on if the registration was successful.
@@ -158,7 +154,7 @@ sdk.loginUser(user: currentUser) { success in
 ```
 
 **ARGUMENTS**
-- `user` (this can be a link to the user class)
+- [user](#user-class)
 
 **RETURN**
 - `Bool` - true or false depending on if the login attempt was successful.
@@ -201,7 +197,7 @@ if let currentUser = sdk.getUser() {
 ```
 
 **RETURN**
-- `User?` - optional user becuase a user may not be set in local storage
+- [user?](#user-class) - optional user becuase a user may not be set in local storage
 
 **ERROR**
 - If no user is set in local storage, the return value will be nil so the returend user needs to be unwrapped. 
@@ -230,7 +226,7 @@ if let currentUser = sdk.getUser(){
 ```
 
 **ARGUMENTS**
-- `user` (this can be a link to the user class)
+- [user](#user-class)
 
 **RETURN**
 - `Bool` - true or false depending on if the edit attempt was successful.
@@ -246,7 +242,7 @@ Edit a user.
 
 ## Bluetooth Connectivity
 
-### Initiate scanning / stop scanning
+### Start and stop scanning
 
 ```swift
 //start scanning
@@ -275,7 +271,7 @@ for device in discoveredDevices {
 ```
 
 **RETURN**
-- `[Device]` - Array of devices that were discovered while scanning.
+- [[Device](#device-class)] - Array of devices that were discovered while scanning.
 
 **ERROR**
 - No devices were found because the user did not start scanning. 
@@ -284,10 +280,10 @@ for device in discoveredDevices {
 Get all discovered devices found while scanning.
 
 **Note**
-- Since Bluetooth connectivity is an asynchronous process that is not controllable we provide delegates (link to the nextile delegates) to inform users when a device has been discovered. 
+- Since Bluetooth connectivity is an asynchronous process that is not controllable we provide [delegates](#delegates-and-protocols) to inform users when a device has been discovered. 
 - The SDK is an ObservableObject and therefore can be used as a published or StateObject variable to update your UI when devices have been discovered.
 
-### Connecting to a Nextile's Device
+### Connecting to a Nextiles Device
 
 ```swift
 //get a device from the discovered devices array
@@ -300,8 +296,8 @@ if let connectingDevice = sdk.getDiscoveredDevices().first {
 ```
 
 **ARGUMENTS**
-- `device` (can be linked to the device class)
-- `settings` (can be a link to the deviceSettings struct)
+- [device](#device-class)
+- `settings` - required data needed to connect.
 
 **RETURN**
 - Use the delegate method deviceGotConnected to be notified when the device connection was successful.
@@ -328,7 +324,7 @@ sdk.connectDevice(uuid: deviceUUID, settings: deviceSettings)
 sdk.connectDevice(uuid: deviceUUID.uuidString, settings: deviceSettings)
 ```
 
-### Disconnecting to a Nextile's Device
+### Disconnecting from a Nextiles Device
 
 ```swift
 //get a device from connected device array
@@ -339,7 +335,7 @@ if let disconnectDevice = sdk.getConnectedDevices().first {
 ```
 
 **ARGUMENTS**
-- `device` (can be linked to the device class)
+- [device](#device-class)
 
 **RETURN**
 - Use the delegate method deviceGotDisconnected to be notified when a Nextile's device got disconnected.
@@ -408,9 +404,9 @@ Stopping a session.
 
 ## Getting Raw Data
 
-Raw data is streamed when a user starts a session. (Link to Sessions right above) We have provided access to the raw data being streamed using PassthroughSubjects (PTS) (Link to Apple's documentation about PTS) You can access these PTS using the getDeviceListener method:
+Raw data is streamed when a user starts a [session](#sessions). We have provided access to the raw data being streamed using [PassthroughSubjects](https://developer.apple.com/documentation/combine/passthroughsubject) (PTS). You can access these PTS using the getDeviceListener method:
 
-### Getting access to a device's PTS
+### Getting access to PTS for a specific Device
 ```swift
 //getting access to a Nextiles Device
 if let myDevice = sdk.getDevice(deviceName: "My Device"){
@@ -420,8 +416,8 @@ sdk.getDeviceListener(device: myDevice, measurement: .NEXTILES_FORCE)
 ```
 
 **ARGUMENTS**
-- `device` (can be linked to the device class)
-- `measurement` (can be linked to the measurement class)
+- [device](#device-class)
+- `measurement` - enum to make it easier to see all of the measurement options to choose from using dot notation.  
 
 **RETURN**
 - PassthroughSubject? - optional PTS because the Device may not exist.
@@ -470,7 +466,7 @@ sdk.getForce(uuid: deviceUUID.uuidString)
 - Your preferred method to identify a device
 
 **RETURN**
-- Optional Measurement (Link to measurement), because there may have been no data streamed as of yet.
+- Optional [Measurement](#measurement-class), because there may have been no data streamed as of yet.
 
 **DESCRIPTION** <br>
 Get the most recent data that has been streamed for a particular device and metric.
@@ -504,12 +500,12 @@ Get the most recent data that has been streamed for a particular device and metr
         }
 ```
 **ARGUMENTS**
-- `user` (this can be a link to the user class)
+- [user](#user-class)
 - `timestamp` of session you would like analytics for
 
 **RETURN**
 - `Bool` - true or false depending on if the API call was made successfully.
-- `Session` (link to a session) - returned analytics class
+- [Session](#session-class) - returned analytics class
 
 **ERROR**
 - `False`, the user does not exist
@@ -650,8 +646,8 @@ Saves a device object to local storage. Best to use if you would like to easily 
     - `timestamp` (String) - the session timestamp the analytics api was requeted to analyze. 
     - `duration` (String) - the duration of the session. Start time to end time in seconds.
     - `activity` (String) - the activity being performed by the user during their session.
-    - `session_summary` (link to summary) - summary of the session
-    - `peaks` (link to peaks) - summary of each peak detected in the session
+    - [session_summary](#summary-class) - summary of the session
+    - [peaks](#peaks-class) - summary of each peak detected in the session
 
 ### Summary class
 - Properties
@@ -690,9 +686,32 @@ Saves a device object to local storage. Best to use if you would like to easily 
     - `foot` - footedness set at registration
     - `dob` - date of birth set at registration
 
+### Measurement class
+- Properties
+    - `force`:
+        - values - an array of force values. 0th position being the a0 value. nth position in the array being the aNth value.
+    - `battery`
+        - charge - the most recent charge level returned by the device.
+    - `environment` 
+        - temperature - the most recent temperature returned by the device.
+        - humidity - the most recent humidity returned by the device.
+        - altitude - the most recent altitude returned by the device.
+    - `acceleration`
+        - x - most recent x value for a device's accleation measurement
+        - y - most recent y value for a device's accleation measurement
+        - z - most recent z value for a device's accleation measurement
+     - `gyration`
+        - x - most recent x value for a device's gyration measurement
+        - y - most recent y value for a device's gyration measurement
+        - z - most recent z value for a device's gyration measurement
+    - `magnet`
+        - x - most recent x value for a device's magnet measurement
+        - y - most recent y value for a device's magnet measurement
+        - z - most recent z value for a device's magnet measurement
+
 ## Delegates and Protocols
 
-The SDK primarily uses protocols and delegates to communicate to end-user Bluetooth updates. To listen for Bluetooth updates set a class as the delegate to our `bleProtocols`.
+The SDK primarily uses [protocols and delegates](https://docs.swift.org/swift-book/LanguageGuide/Protocols.html) to communicate to end-user Bluetooth updates. To listen for Bluetooth updates set a class as the delegate to our `bleProtocols`.
 
 ```swift
 class SimpleClass{
