@@ -39,13 +39,23 @@ The NextilesSDK is distributed using [Swift Package Manager](https://www.swift.o
 
 ### Installation Steps
 1. In your Xcode project click File -> Add Packages
-2. A popup will appear asking you to choose an existing Apple Library or to search for other libraries. 
+![](assets/add-packages.png)
+2. A popup will appear asking you to choose an existing Apple Library or to search for other libraries.
 3. To use this SDK simply in the search bar paste: "`https://github.com/Nextiles/mobile-ios-sdk/`"
-4. In the dependency rule option you will choose the `exact version` option. The version to use will be "`0.0.1`"
-5. Lastly another popup will appear asking you to confirm access to our private repository. Simply enter your Github handle and the token that will be provided to you. 
+4. In the dependency rule option you will choose the `exact version` option. The version to use will be "`0.1.0`"
+5. Click the `Add Package` button in the bottom right corner of the pop up. 
+ ![](assets/dialogue-spm.png)
+6. Lastly another popup will appear asking you to confirm access to our private repository. Simply enter your Github handle and the token that will be provided to you. 
+![](assets/github-token.png)
 ## Info Plist
 
-An NX-Info.plist file, provided by Nextiles is needed to be able to use the SDK. Without this file, the SDK will not work. Simply drag and drop the NX-Info file into your application's file hierarchy to finish the installation and setup process of the SDK.  
+An NX-Info.plist file, provided by Nextiles is needed to be able to use the SDK. Without this file, the SDK will not work. Simply drag and drop the NX-Info file into your application's file hierarchy to finish the installation and setup process of the SDK.
+
+
+![](assets/nxinfo.png)
+![](assets/info-placement.png)
+
+
 ## Getting started with the SDK
 
 ```swift
