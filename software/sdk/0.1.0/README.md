@@ -411,6 +411,7 @@ Stopping a session.
 - Stopping a session will stop listening to for connected device's raw data.
 - At this point stopping a session will upload all of your raw data to the cloud that has not done so already. 
 - You can call "sdk.stopSession as Void" if you don't want the timestamp.
+- It is highly recommended to complete `uploadSurvey()` function at this point to get the best analytics. 
 
 ## Getting Raw Data
 
