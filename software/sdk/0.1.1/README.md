@@ -658,9 +658,8 @@ Getting analytics for a specific file. You do not have to wait for a stop sessio
     - `connected` (Optional String) - wheter the device is connected or not.
     - `subscribed` (Optional String) - whether the device is subscribed to or not.
 
-### Methods Specific for the device class
 
-### GetDevice
+#### GetDevice
 
 
 ```swift
@@ -697,7 +696,7 @@ Returns a specific discovered device.
 **Note**
 - This device returned can be used to connect, or disconnect.
 
-### Setting custom name for devices
+#### Setting custom name for devices
 
 ```swift
 //getting access to a device
@@ -721,7 +720,7 @@ Add a custom name for a specific device.
 - This function can be used to change the custom name. 
 - To delete the custom name you have to use `deleteDeviceCustomName(device: Device)`
 
-### Saving devices to local storage
+#### Saving devices to local storage
 
 ```swift
 //get access to a device
