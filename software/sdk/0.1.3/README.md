@@ -422,10 +422,10 @@ To update a device's firmware you first need to know all of the available firmwa
 
 ```swift
 sdk.getDeviceFirmwareList { availableFirmware in
-        for firmware in availableFirmware{
-            print(firmware)
-        }
+    for firmware in availableFirmware{
+        print(firmware)
     }
+}
 ```
 
 **Return**
@@ -442,8 +442,8 @@ Update the firmware of the device
 ```swift
 //get a connectedDevice
 if let connectedDevice = sdk.getConnectedDevices().first{
-        sdk.updateDeviceFirmware(device: connectedDevice, with: firmware)
-    }
+    sdk.updateDeviceFirmware(device: connectedDevice, with: firmware)
+}
 ```
 **ARGUMENTS**
 - [device](#device-class) - device to update
@@ -454,7 +454,7 @@ if let connectedDevice = sdk.getConnectedDevices().first{
 
 **ERROR**
 - Device is not connected, bluetooth issues.
-- Deivice is not a Nextiles 200 device. 
+- Device is not a Nextiles 200 or greater device. 
 - Firmware choosen is not a firmware 200 or greater.
 
 **DESCRIPTION** <br>
@@ -462,7 +462,7 @@ Update the firmware of a Nextiles device.
 
 **Note**
 - The device must be connected
-- The device must be a Nextiles 200 device.
+- The device must be a Nextiles 200 or greater device.
 
 ## Sessions
 
