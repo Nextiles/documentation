@@ -156,7 +156,7 @@ IMU and device measurements are updated every 100 msec, as they are not relevant
 <!-- --------------------------------------- -->
 <!-- PYTHON SCRIPTS -->
 <!-- --------------------------------------- -->
-## Python Scripts
+## Python Script
 
 ### Arguments
 
