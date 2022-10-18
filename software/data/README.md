@@ -2,30 +2,39 @@
 
 This documentation contains information on the Bluetooth and CSV data structure, as well as ways to pull down data using provided python scripts
 
-## Table of Contents
-
 - [Nextiles Data Documentation](#nextiles-data-documentation)
-  * [Data Structure](#data-structure)
-    + [CSV](#csv)
-    + [Metadata](#metadata)
-  * [Product Types](#product-types)
-    + [Arm & Knee Sleeve](#arm---knee-sleeve)
-    + [Sock](#sock)
-    + [Surface](#surface)
-  * [Python Scripts](#python-scripts)
-    + [Arguments](#arguments)
-    + [Examples](#examples)
-      - [Example 1 - `start_date`](#example-1----start-date-)
-      - [Example 2 - `start_date` and `start_time`](#example-2----start-date--and--start-time-)
-      - [Example 3 - `start_date` and `end_date`](#example-3----start-date--and--end-date-)
-      - [Example 4 - `start_date`, `start_time`, and `end_time`](#example-4----start-date----start-time---and--end-time-)
-      - [Example 5 - `start_date`, `end_date`, `end_time`](#example-5----start-date----end-date----end-time-)
-      - [Example 6 - `start_date`, `start_time`, `end_date`, `end_time`](#example-6----start-date----start-time----end-date----end-time-)
-    + [Error handling](#error-handling)
+  - [Requirements](#requirements)
+  - [Data Structure](#data-structure)
+    - [CSV](#csv)
+    - [Metadata](#metadata)
+  - [Product Types](#product-types)
+    - [Arm & Knee Sleeve](#arm--knee-sleeve)
+    - [Sock](#sock)
+    - [Surface](#surface)
+  - [Python Scripts](#python-scripts)
+    - [Arguments](#arguments)
+    - [Examples](#examples)
+      - [Example 1 - `start_date`](#example-1---start_date)
+      - [Example 2 - `start_date` and `start_time`](#example-2---start_date-and-start_time)
+      - [Example 3 - `start_date` and `end_date`](#example-3---start_date-and-end_date)
+      - [Example 4 - `start_date`, `start_time`, and `end_time`](#example-4---start_date-start_time-and-end_time)
+      - [Example 5 - `start_date`, `end_date`, `end_time`](#example-5---start_date-end_date-end_time)
+      - [Example 6 - `start_date`, `start_time`, `end_date`, `end_time`](#example-6---start_date-start_time-end_date-end_time)
+      - [Example 7 - `start_date`, `end_date`, `all_users`](#example-7---start_date-end_date-all_users)
+      - [Example 8 - `start_date`, `end_date`, `all_users`, `new`](#example-8---start_date-end_date-all_users-new)
+    - [Error handling](#error-handling)
 
 <!-- --------------------------------------- -->
 <!-- PYTHON SCRIPTS -->
 <!-- --------------------------------------- -->
+
+## Requirements
+All packages are built-in for python 3 and above. Please upgrade if needed.
+To run the python script you would need the following packages:
+- python 3+ - [download](https://www.python.org/downloads/)
+- `requests` package - [documentation](https://pypi.org/project/requests/)
+- `datetime` package - [documentation](https://docs.python.org/3/library/datetime.html)
+  
 ## Data Structure
 
 Data is stored by organization, username, and date / time of session. Date is written as `YYYY-MM-DD` and time as `HH:MM:SS` with the CSV files stored as `HH:MM:SS.csv` with incrementing time per duration of the session. Folder structure will appear as follows:
@@ -81,7 +90,7 @@ Session metadata contains information about the user, session time, and device.
 
 ```javascript
 {
-  "organization" : "NBA",
+  "organization" : "org",
   "data" : "1.0.0",
   "platform_version" : "iOS 15.3.1",
   "platform" : "iOS",
@@ -94,7 +103,7 @@ Session metadata contains information about the user, session time, and device.
     }
   ],
   "date" : "2022-03-02",
-  "username" : "tryan",
+  "username" : "user",
   "time" : "10:22:35"
 }
 ```
@@ -161,7 +170,7 @@ IMU and device measurements are updated every 100 msec, as they are not relevant
 ### Arguments
 
 The mandatory arguments required to run the script are: 
-- `--username` (`-u`)
+- `--username` (`-u`) (Not needed when using special arguments like `ls_users` and `all_users`)
 - `--organization` (`-o`)
 - `--token` (`-t`) 
 - `--start_date` (`-s`)
@@ -173,12 +182,15 @@ Optional arguments include:
 
 Special arguments:
 - `ls` - prints files to the console, rather than download
+- `ls_users` - lists all users of an organization
+- `all_users` - download data for all users of an organization
+- `new` - check for existing data for a user and only downloads new datasets
 
 **Time format**
 
-The date formats will be YYYY-MM-DD (year-month-day). 
+The date formats will be `YYYY-MM-DD` (year-month-day). 
 
-The time formats will be HH-MM-SS (hours-minutes-seconds). Hours are in military time (e.g. 2 PM is 14)
+The time formats will be `HH-MM-SS` (hours-minutes-seconds). Hours are in military time (e.g. 2 PM is 14)
 
 **Tokens**
 
@@ -192,10 +204,21 @@ Downloading files
 python3 download_s3_raw.py -u <username> -o <organization> -t <token> -s <YYYY-MM-DD> 
 ```
 
+Downloading files for all users of an organization
+
+```bash
+python3 download_s3_raw.py -o <organization> -t <token> -s <YYYY-MM-DD> all_users
+```
+
 Listing files
 
 ```bash
 python3  download_s3_raw.py -u <username> -o <organization> -t <token> ls
+```
+
+Listing all users of an organization
+```bash
+python3  download_s3_raw.py -o <organization> -t <token> ls_users
 ```
 
 Note that a `start_time` and `end_time` can be added to narrow the printed list of files on the terminal
@@ -258,6 +281,26 @@ To get data between two dates starting from 2021-12-03 from 11-12-00 till 2021-1
 
 ```bash
 python3 download_s3_raw.py -u <username> -o <organization> -t <token> -s 2021-12-03 -e 2021-12-06 -i 11-12-00 -j 08-20-12
+```
+
+#### Example 7 - `start_date`, `end_date`, `all_users`
+
+<!-- all users data -->
+
+To get data for all users for an organization between two dates starting from 2021-12-03  till 2021-12-06 
+
+```bash
+python3 download_s3_raw.py -o <organization> -t <token> -s 2021-12-03 -e 2021-12-06 all_users
+```
+
+#### Example 8 - `start_date`, `end_date`, `all_users`, `new`
+
+<!-- all users data  and checking for existing data-->
+
+To only get new data for all users for an organization between two dates starting from 2021-12-03  till 2021-12-06 
+
+```bash
+python3 download_s3_raw.py -o <organization> -t <token> -s 2021-12-03 -e 2021-12-06 all_users new
 ```
 
 ### Error handling
