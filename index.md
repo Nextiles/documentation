@@ -1,3 +1,9 @@
+---
+layout: default
+title: Home
+nav_order: 1
+---
+
 # Documentation
 
 ## Table of Contents
@@ -28,13 +34,3 @@
 https://github.com/self-xdsd/self-docs
 
 download ruby with devkit - https://jekyllrb.com/docs/installation/windows/
-
-https://just-the-docs.github.io/just-the-docs/docs/navigation-structure/
-
-```html
----
-layout: default
-title: 404
-nav_exclude: true
----
-```
