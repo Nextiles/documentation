@@ -1,0 +1,7 @@
+# Local Setting
+baseurl: ""
+url: ""
+
+theme: just-the-docs
+title: "Nextiles Documentation"
+footer_content: "Copyright &copy; 2018-2022 Nextiles, Inc."
