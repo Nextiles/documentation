@@ -59,7 +59,7 @@ Data heiarchy
 
 | measurement | type         | field    | units              |
 |-------------|--------------|----------|--------------------|
-| IMU         | acceleration | a[x,y,z] | [+/- g]            |
+| IMU         | acceleration | a[x,y,z] | [g]                |
 | IMU         | gyration     | g[x,y,z] | [deg/s]            |
 | IMU         | magnet       | m[x,y,z] | [milli gauss]      |
 | sensor      | adc          | a[0-n]   | [N (uncalibrated)] |
