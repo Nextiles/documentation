@@ -59,9 +59,9 @@ Data heiarchy
 
 | measurement | type         | field    | units              |
 |-------------|--------------|----------|--------------------|
-| IMU         | acceleration | a[x,y,z] | [m/s2]             |
+| IMU         | acceleration | a[x,y,z] | [+/- g]            |
 | IMU         | gyration     | g[x,y,z] | [deg/s]            |
-| IMU         | magnet       | m[x,y,z] | [tesla]            |
+| IMU         | magnet       | m[x,y,z] | [milli gauss]      |
 | sensor      | adc          | a[0-n]   | [N (uncalibrated)] |
 | device      | temperature  | temp     | [Celcius]          |
 | device      | humidity     | humd     | [%]                |
@@ -129,7 +129,7 @@ All products contain IMU, sensor, device, and battery measurements. Each device 
 |------------------|--------------|----------|--------|-----|-------------|----------|-----------|
 | 0.0.1            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
 | 1.0.0            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
-| 2.0.0            | 100          | 100      | 10     | 1   | 10          | 10       | 100       |
+| 2.0.0            | 100          | 1        | 1      | 1   | 10          | 10       | 100       |
 
 ### Sock
 
@@ -143,7 +143,7 @@ All products contain IMU, sensor, device, and battery measurements. Each device 
 |------------------|--------------|----------|--------|-----|-------------|----------|-----------|
 | 0.0.1            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
 | 1.0.0            | 100          | 100      | 100    | 1   | 10          | 1        | 1         |
-| 2.0.0            | 100          | 100      | 10     | 1   | 10          | 10       | 100       |
+| 2.0.0            | 100          | 1        | 1      | 1   | 10          | 10       | 100       |
 
 ### Surface
 
